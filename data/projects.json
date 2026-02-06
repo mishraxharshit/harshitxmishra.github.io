@@ -1,0 +1,20 @@
+[
+    {
+        "title": "Project Zenith",
+        "desc": "A minimalist task management system designed for deep work and focus.",
+        "tag": "Product Design",
+        "link": "#"
+    },
+    {
+        "title": "Clean Slate",
+        "desc": "An open-source library for creating calm, distraction-free web interfaces.",
+        "tag": "Development",
+        "link": "#"
+    },
+    {
+        "title": "The Quiet Web",
+        "desc": "Research paper on reducing cognitive load in modern application design.",
+        "tag": "Research",
+        "link": "#"
+    }
+]
