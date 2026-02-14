@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn - Research & Knowledge Base</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F7F6F3;
+            --surface: #FFFFFF;
+            --dark: #0F0F0F;
+            --accent: #E63946;
+            --blue: #1D6FA4;
+            --green: #2A9D5C;
+            --orange: #E07B27;
+            --purple: #7B5EA7;
+            --border: #E0DDD8;
+            --text: #1A1A1A;
+            --muted: #888;
+            --tag-bg: #F0EEE9;
+            --sidebar-width: 280px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            font-family: 'IBM Plex Sans', sans-serif;
+            color: var(--text);
+            margin: 0;
+            padding-top: 60px;
+        }
+
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--surface);
+            border-bottom: 1.5px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .nav-left .logo {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-right a {
+            font-size: 0.9rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-right a:hover, .nav-right a.active {
+            color: var(--accent);
+        }
+
+        /* Layout */
+        .learn-layout {
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr 400px;
+            min-height: calc(100vh - 60px);
+            gap: 0;
+        }
+
+        /* Sidebar */
+        .learn-sidebar {
+            background: var(--surface);
+            border-right: 1.5px solid var(--border);
+            position: sticky;
+            top: 60px;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            padding: 1.5rem 0;
+        }
+
+        .sidebar-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            padding: 0 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .topic-group {
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            transition: background 0.2s;
+            text-align: left;
+        }
+
+        .topic-header:hover {
+            background: var(--tag-bg);
+        }
+
+        .topic-header.active {
+            background: var(--tag-bg);
+            color: var(--accent);
+        }
+
+        .topic-icon {
+            font-size: 0.85rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 700;
+        }
+
+        .expand-icon {
+            margin-left: auto;
+            font-size: 0.7rem;
+            transition: transform 0.3s;
+        }
+
+        .topic-header.active .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .topic-items {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .topic-items.active {
+            max-height: 500px;
+        }
+
+        .topic-item {
+            display: block;
+            padding: 0.6rem 1.5rem 0.6rem 3.5rem;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 2px solid transparent;
+        }
+
+        .topic-item:hover {
+            color: var(--text);
+            background: var(--tag-bg);
+        }
+
+        .topic-item.active {
+            color: var(--accent);
+            background: var(--tag-bg);
+            border-left-color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .learn-content {
+            padding: 3rem;
+            overflow-y: auto;
+        }
+
+        .content-header {
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        .breadcrumb .separator {
+            margin: 0 0.5rem;
+        }
+
+        .content-header h1 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .content-header h1 .accent {
+            color: var(--accent);
+        }
+
+        .content-header .lead {
+            font-size: 1.05rem;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .learning-path {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .path-item {
+            display: flex;
+            gap: 1.5rem;
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            padding: 1.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .path-item:hover {
+            border-color: var(--accent);
+            box-shadow: 4px 4px 0 var(--dark);
+        }
+
+        .path-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            opacity: 0.3;
+            min-width: 50px;
+        }
+
+        .path-content h4 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .path-content p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Research Panel */
+        .research-panel {
+            background: var(--surface);
+            border-left: 1.5px solid var(--border);
+            position: sticky;
+            top: 60px;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .panel-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1.5px solid var(--border);
+        }
+
+        .panel-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .panel-subtitle {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-tab {
+            padding: 0.4rem 0.8rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            background: var(--tag-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--accent);
+        }
+
+        .filter-tab.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .research-card {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .research-card:hover {
+            border-color: var(--accent);
+            transform: translateX(-2px);
+        }
+
+        .research-meta {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .research-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            background: var(--tag-bg);
+            color: var(--muted);
+        }
+
+        .research-badge.new {
+            background: var(--green);
+            color: white;
+        }
+
+        .research-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .research-summary {
+            font-size: 0.75rem;
+            color: var(--muted);
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .research-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.7rem;
+            color: var(--muted);
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .research-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--muted);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-box {
+            background: var(--tag-bg);
+            border: 1.5px solid var(--border);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .learn-layout {
+                grid-template-columns: var(--sidebar-width) 1fr;
+            }
+            .research-panel {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .learn-layout {
+                grid-template-columns: 1fr;
+            }
+            .learn-sidebar {
+                position: relative;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="grain-overlay"></div>
+    
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <div class="nav-left">
+            <a href="index.html" class="logo">HM</a>
+        </div>
+        <div class="nav-right">
+            <a href="index.html#work">Work</a>
+            <a href="index.html#research">Research</a>
+            <a href="index.html#captures">Captures</a>
+            <a href="learn.html" class="active">Learn</a>
+            <a href="https://github.com/mishraxharshit/portfolio/wiki" target="_blank">Wiki ↗</a>
+        </div>
+    </nav>
+
+    <!-- Learn Layout -->
+    <div class="learn-layout">
+        
+        <!-- Sidebar -->
+        <aside class="learn-sidebar">
+            <div class="sidebar-title">Knowledge Base</div>
+            
+            <div class="topic-group">
+                <button class="topic-header active" data-topic="ml">
+                    <span class="topic-icon">ML</span>
+                    <span>Machine Learning</span>
+                    <span class="expand-icon">▼</span>
+                </button>
+                <div class="topic-items active">
+                    <a href="ml-learn.html" class="topic-item active">Interactive Lessons</a>
+                    <a href="ml-visual-map.html" class="topic-item" target="_blank">Complete Visual Map</a>
+                </div>
+            </div>
+
+            <div class="topic-group">
+                <button class="topic-header" data-topic="web">
+                    <span class="topic-icon">WEB</span>
+                    <span>Web Development</span>
+                    <span class="expand-icon">▼</span>
+                </button>
+                <div class="topic-items">
+                    <a href="#web-coming" class="topic-item">Coming Soon</a>
+                </div>
+            </div>
+
+            <div class="topic-group">
+                <button class="topic-header" data-topic="ds">
+                    <span class="topic-icon">DS</span>
+                    <span>Data Science</span>
+                    <span class="expand-icon">▼</span>
+                </button>
+                <div class="topic-items">
+                    <a href="#ds-coming" class="topic-item">Coming Soon</a>
+                </div>
+            </div>
+
+            <div class="topic-group">
+                <button class="topic-header" data-topic="sys">
+                    <span class="topic-icon">SYS</span>
+                    <span>Systems & Architecture</span>
+                    <span class="expand-icon">▼</span>
+                </button>
+                <div class="topic-items">
+                    <a href="#sys-coming" class="topic-item">Coming Soon</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="learn-content">
+            <div class="content-header">
+                <div class="breadcrumb">
+                    <span>Learn</span>
+                    <span class="separator">/</span>
+                    <span>Overview</span>
+                </div>
+                <h1>Knowledge <span class="accent">Hub</span></h1>
+                <p class="lead">Structured learning paths combined with latest research. Theory meets practice.</p>
+            </div>
+
+            <div class="learning-path">
+                <div class="path-item" onclick="window.location.href='ml-learn.html'">
+                    <div class="path-number">01</div>
+                    <div class="path-content">
+                        <h4>Machine Learning Fundamentals</h4>
+                        <p>From basic mathematics to neural networks. 21 topics across 6 progressive phases with visual explanations.</p>
+                    </div>
+                </div>
+
+                <div class="path-item" style="opacity: 0.5; cursor: not-allowed;">
+                    <div class="path-number">02</div>
+                    <div class="path-content">
+                        <h4>Web Development</h4>
+                        <p>Modern web technologies, frameworks, and best practices. Coming soon.</p>
+                    </div>
+                </div>
+
+                <div class="path-item" style="opacity: 0.5; cursor: not-allowed;">
+                    <div class="path-number">03</div>
+                    <div class="path-content">
+                        <h4>Data Science</h4>
+                        <p>Data analysis, visualization, and statistical methods. Coming soon.</p>
+                    </div>
+                </div>
+
+                <div class="path-item" style="opacity: 0.5; cursor: not-allowed;">
+                    <div class="path-number">04</div>
+                    <div class="path-content">
+                        <h4>Systems & Architecture</h4>
+                        <p>Distributed systems, scalability, and infrastructure design. Coming soon.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Research Panel -->
+        <aside class="research-panel">
+            <div class="panel-header">
+                <div class="panel-title">Latest Research</div>
+                <div class="panel-subtitle">Recent papers from arXiv</div>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-number" id="paperCount">12</div>
+                    <div class="stat-label">Papers</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="updateTime">Today</div>
+                    <div class="stat-label">Updated</div>
+                </div>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="ml">ML</button>
+                <button class="filter-tab" data-filter="cv">Vision</button>
+                <button class="filter-tab" data-filter="nlp">NLP</button>
+            </div>
+
+            <div id="researchContainer">
+                <div class="loading">Loading latest research...</div>
+            </div>
+        </aside>
+
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Sidebar toggle
+        document.querySelectorAll('.topic-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const items = this.nextElementSibling;
+                this.classList.toggle('active');
+                items.classList.toggle('active');
+            });
+        });
+
+        // Research Panel - arXiv API Integration
+        async function fetchArXivPapers() {
+            const container = document.getElementById('researchContainer');
+            
+            try {
+                // arXiv API endpoint (using CORS proxy for demo)
+                const query = 'cat:cs.AI OR cat:cs.LG OR cat:cs.CV OR cat:cs.CL';
+                const url = `https://export.arxiv.org/api/query?search_query=${encodeURIComponent(query)}&start=0&max_results=12&sortBy=submittedDate&sortOrder=descending`;
+                
+                const response = await fetch(url);
+                const data = await response.text();
+                
+                // Parse XML
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(data, 'text/xml');
+                const entries = xml.querySelectorAll('entry');
+                
+                container.innerHTML = '';
+                
+                entries.forEach((entry, index) => {
+                    const title = entry.querySelector('title').textContent.trim();
+                    const summary = entry.querySelector('summary').textContent.trim();
+                    const link = entry.querySelector('id').textContent;
+                    const published = entry.querySelector('published').textContent;
+                    const authors = entry.querySelectorAll('author name');
+                    
+                    // Extract category
+                    const category = entry.querySelector('category');
+                    const catLabel = category ? category.getAttribute('term').split('.')[1] : 'ML';
+                    
+                    // Check if new (last 3 days)
+                    const pubDate = new Date(published);
+                    const isNew = (Date.now() - pubDate.getTime()) < (3 * 24 * 60 * 60 * 1000);
+                    
+                    const card = document.createElement('div');
+                    card.className = 'research-card';
+                    card.setAttribute('data-category', catLabel.toLowerCase());
+                    
+                    card.innerHTML = `
+                        <div class="research-meta">
+                            ${isNew ? '<span class="research-badge new">NEW</span>' : ''}
+                            <span class="research-badge">${catLabel.toUpperCase()}</span>
+                            <span class="research-badge">${authors.length} authors</span>
+                        </div>
+                        <div class="research-title">${title.substring(0, 80)}${title.length > 80 ? '...' : ''}</div>
+                        <div class="research-summary">${summary.substring(0, 120)}...</div>
+                        <div class="research-footer">
+                            <span>${new Date(published).toLocaleDateString('en-US', {month: 'short', day: 'numeric'})}</span>
+                            <a href="${link}" target="_blank" class="research-link">Read →</a>
+                        </div>
+                    `;
+                    
+                    card.addEventListener('click', function(e) {
+                        if (!e.target.classList.contains('research-link')) {
+                            window.open(link, '_blank');
+                        }
+                    });
+                    
+                    container.appendChild(card);
+                });
+                
+                // Update count
+                document.getElementById('paperCount').textContent = entries.length;
+                
+            } catch (error) {
+                console.error('Error fetching papers:', error);
+                container.innerHTML = `
+                    <div class="research-card">
+                        <div class="research-title">Sample: Attention Is All You Need</div>
+                        <div class="research-summary">Transformer architecture for sequence-to-sequence models, eliminating recurrence and convolutions.</div>
+                        <div class="research-footer">
+                            <span>Jun 12</span>
+                            <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="research-link">Read →</a>
+                        </div>
+                    </div>
+                    <div class="research-card">
+                        <div class="research-title">Sample: Deep Residual Learning</div>
+                        <div class="research-summary">ResNet architecture enabling training of very deep neural networks through skip connections.</div>
+                        <div class="research-footer">
+                            <span>Dec 10</span>
+                            <a href="https://arxiv.org/abs/1512.03385" target="_blank" class="research-link">Read →</a>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                const cards = document.querySelectorAll('.research-card');
+                
+                cards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Load papers on page load
+        fetchArXivPapers();
+        
+        // Refresh every 5 minutes
+        setInterval(fetchArXivPapers, 5 * 60 * 1000);
+    </script>
+
+</body>
+</html>

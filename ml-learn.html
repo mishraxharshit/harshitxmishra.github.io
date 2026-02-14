@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Machine Learning - Learn</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F6F3;
+  --surface: #FFFFFF;
+  --dark: #0F0F0F;
+  --accent: #E63946;
+  --blue: #1D6FA4;
+  --green: #2A9D5C;
+  --orange: #E07B27;
+  --purple: #7B5EA7;
+  --yellow: #D4A017;
+  --border: #E0DDD8;
+  --text: #1A1A1A;
+  --muted: #888;
+  --tag-bg: #F0EEE9;
+  --sidebar-width: 280px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  font-family: 'IBM Plex Sans', sans-serif;
+  color: var(--text);
+  margin: 0;
+  padding-top: 60px;
+}
+
+/* Main Navigation */
+.main-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-bottom: 1.5px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+
+.nav-left .logo {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--dark);
+  text-decoration: none;
+}
+
+.nav-right {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-right a {
+  font-size: 0.9rem;
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-right a:hover {
+  color: var(--accent);
+}
+
+/* Layout */
+.ml-layout {
+  display: flex;
+  min-height: calc(100vh - 60px);
+}
+
+/* Sidebar */
+.ml-sidebar {
+  width: var(--sidebar-width);
+  background: var(--surface);
+  border-right: 1.5px solid var(--border);
+  position: fixed;
+  left: 0;
+  top: 60px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: 1.5rem 0;
+}
+
+.sidebar-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  padding: 0 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.topic-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  padding: 0.5rem 1.5rem;
+  background: rgba(230, 57, 70, 0.05);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.topic-link {
+  display: block;
+  padding: 0.7rem 1.5rem 0.7rem 2.5rem;
+  font-size: 0.9rem;
+  color: var(--text);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.topic-link:hover {
+  background: var(--tag-bg);
+  color: var(--dark);
+}
+
+.topic-link.active {
+  background: var(--tag-bg);
+  border-left-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Main Content */
+.ml-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: 3rem;
+  max-width: 900px;
+}
+
+.content-container {
+  display: none;
+}
+
+.content-container.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+
+.breadcrumb a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: var(--accent);
+}
+
+.breadcrumb-separator {
+  margin: 0 0.5rem;
+}
+
+/* Page Title */
+.page-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+/* Cards and Components from original */
+.phase-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--dark);
+  color: #fff;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  padding: 0.35rem 0.9rem;
+  margin: 2rem 0 1.5rem;
+  text-transform: uppercase;
+}
+
+.phase-label .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover { 
+  box-shadow: 4px 4px 0 var(--dark); 
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+  gap: 1rem;
+}
+
+.card-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.card-sub {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+  line-height: 1.5;
+}
+
+.difficulty-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.easy { background: #D4F5E2; color: #1A6B3C; }
+.medium { background: #FFF3CD; color: #7A5200; }
+.hard { background: #FDDEDE; color: #8B0000; }
+.expert { background: #EAE0F5; color: #4B2D80; }
+
+.analogy {
+  background: var(--tag-bg);
+  border-left: 3px solid var(--accent);
+  padding: 0.7rem 1rem;
+  font-size: 0.82rem;
+  color: #444;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.insight {
+  background: var(--dark);
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  font-size: 0.8rem;
+  margin-top: 0.8rem;
+  font-family: 'IBM Plex Mono', monospace;
+  line-height: 1.7;
+}
+
+.insight span { color: #FFD700; }
+
+.formula {
+  background: var(--tag-bg);
+  border: 1px solid var(--border);
+  padding: 0.6rem 1rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  color: var(--blue);
+  letter-spacing: 0.02em;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 2.5rem 0;
+}
+
+/* Bar Charts */
+.bar-chart-wrap { margin-top: 0.5rem; }
+.bar-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 3rem;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.6rem;
+}
+.bar-name {
+  font-size: 0.75rem;
+  color: var(--text);
+  font-family: 'IBM Plex Mono', monospace;
+}
+.bar-track {
+  height: 20px;
+  background: var(--tag-bg);
+  position: relative;
+  border: 1px solid var(--border);
+}
+.bar-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 6px;
+  font-size: 0.65rem;
+  color: #fff;
+  font-weight: 600;
+  font-family: 'IBM Plex Mono', monospace;
+  transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+}
+.bar-pct {
+  font-size: 0.7rem;
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--muted);
+  text-align: right;
+}
+
+/* Line Chart */
+.line-chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  margin-top: 0.5rem;
+  overflow: visible;
+}
+.line-chart-wrap svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Scatter */
+.scatter-wrap {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  margin-top: 0.5rem;
+}
+
+/* Flow */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+.flow-step {
+  background: var(--dark);
+  color: #fff;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  padding: 0.5rem 0.9rem;
+  white-space: nowrap;
+}
+.flow-step.colored { background: var(--accent); }
+.flow-step.blue { background: var(--blue); }
+.flow-step.green { background: var(--green); }
+.flow-step.orange { background: var(--orange); }
+.flow-step.purple { background: var(--purple); }
+.flow-arrow {
+  font-size: 1rem;
+  color: var(--muted);
+  padding: 0 0.3rem;
+}
+
+/* Tree */
+.tree {
+  margin-top: 0.5rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  line-height: 2;
+  color: var(--text);
+}
+.tree .root { font-weight: 700; font-size: 0.8rem; margin-bottom: 0.2rem; }
+.tree .branch { padding-left: 1.5rem; color: #444; }
+.tree .leaf { padding-left: 3rem; color: var(--muted); font-size: 0.68rem; }
+
+/* Navigation Buttons */
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1.5px solid var(--border);
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.nav-btn.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ml-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+  }
+  .ml-sidebar.open {
+    transform: translateX(0);
+  }
+  .ml-content {
+    margin-left: 0;
+    padding: 1.5rem;
+  }
+}
+
+@keyframes growW { from { width: 0 !important; } }
+.bar-fill { animation: growW 1.4s cubic-bezier(0.16,1,0.3,1) both; }
+</style>
+</head>
+<body>
+
+<!-- Main Navigation -->
+<nav class="main-nav">
+  <div class="nav-left">
+    <a href="index.html" class="logo">HM</a>
+  </div>
+  <div class="nav-right">
+    <a href="index.html#work">Work</a>
+    <a href="index.html#research">Research</a>
+    <a href="learn.html">Learn</a>
+    <a href="https://github.com/mishraxharshit/portfolio/wiki" target="_blank">Wiki ↗</a>
+  </div>
+</nav>
+
+<!-- ML Layout -->
+<div class="ml-layout">
+  
+  <!-- Sidebar -->
+  <aside class="ml-sidebar" id="mlSidebar">
+    <div class="sidebar-title">Machine Learning</div>
+    
+    <div class="topic-section">
+      <div class="section-label">Phase 1: Foundations</div>
+      <a href="#intro" class="topic-link active" data-topic="intro">Introduction</a>
+      <a href="#data-basics" class="topic-link" data-topic="data-basics">Data Basics</a>
+      <a href="#linear-relationship" class="topic-link" data-topic="linear-relationship">Linear Relationships</a>
+      <a href="#vectors" class="topic-link" data-topic="vectors">Vectors</a>
+    </div>
+
+    <div class="topic-section">
+      <div class="section-label">Phase 2: Core Algorithms</div>
+      <a href="#linear-regression" class="topic-link" data-topic="linear-regression">Linear Regression</a>
+      <a href="#logistic-regression" class="topic-link" data-topic="logistic-regression">Logistic Regression</a>
+      <a href="#decision-trees" class="topic-link" data-topic="decision-trees">Decision Trees</a>
+      <a href="#overfitting" class="topic-link" data-topic="overfitting">Overfitting vs Underfitting</a>
+      <a href="#train-test-split" class="topic-link" data-topic="train-test-split">Train/Test Split</a>
+    </div>
+
+    <div class="topic-section">
+      <div class="section-label">Phase 3: Learning Process</div>
+      <a href="#loss-functions" class="topic-link" data-topic="loss-functions">Loss Functions</a>
+      <a href="#gradient-descent" class="topic-link" data-topic="gradient-descent">Gradient Descent</a>
+      <a href="#backpropagation" class="topic-link" data-topic="backpropagation">Backpropagation</a>
+    </div>
+
+    <div class="topic-section">
+      <div class="section-label">Phase 4: Neural Networks</div>
+      <a href="#neural-networks" class="topic-link" data-topic="neural-networks">Neural Network Anatomy</a>
+      <a href="#activations" class="topic-link" data-topic="activations">Activation Functions</a>
+      <a href="#dropout" class="topic-link" data-topic="dropout">Dropout</a>
+    </div>
+
+    <div class="topic-section">
+      <div class="section-label">Phase 5: Evaluation</div>
+      <a href="#confusion-matrix" class="topic-link" data-topic="confusion-matrix">Confusion Matrix</a>
+      <a href="#bias-variance" class="topic-link" data-topic="bias-variance">Bias vs Variance</a>
+    </div>
+
+    <div class="topic-section">
+      <div class="section-label">Phase 6: Advanced</div>
+      <a href="#cnn" class="topic-link" data-topic="cnn">CNNs</a>
+      <a href="#attention" class="topic-link" data-topic="attention">Attention Mechanism</a>
+      <a href="#embeddings" class="topic-link" data-topic="embeddings">Embeddings</a>
+      <a href="#reinforcement" class="topic-link" data-topic="reinforcement">Reinforcement Learning</a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="ml-content" id="mlContent">
+    
+    <!-- Introduction -->
+    <div id="intro" class="content-container active">
+      <div class="breadcrumb">
+        <a href="learn.html">Learn</a>
+        <span class="breadcrumb-separator">/</span>
+        <a href="ml-learn.html">Machine Learning</a>
+        <span class="breadcrumb-separator">/</span>
+        <span>Introduction</span>
+      </div>
+      <h1 class="page-title">Machine Learning Visual Map</h1>
+      <p class="page-subtitle">Every core concept explained with visualizations. From basic mathematics to advanced neural networks.</p>
+      
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">What is Machine Learning?</div>
+            <div class="card-sub">Teaching computers to learn patterns from data without explicit programming</div>
+          </div>
+        </div>
+        <p style="line-height:1.7; margin-bottom:1rem;">Machine Learning is a subset of artificial intelligence that enables systems to learn and improve from experience. Instead of being explicitly programmed for every task, ML algorithms build mathematical models based on sample data to make predictions or decisions.</p>
+        
+        <div class="analogy">Think of it like teaching a child to recognize animals. Instead of programming rules like "if it has four legs and barks, it's a dog," we show the child thousands of pictures of dogs. Eventually, the child learns the pattern and can identify new dogs they've never seen before.</div>
+        
+        <div class="insight">This guide covers <span>20 fundamental concepts</span> across 6 progressive phases. Each concept includes visual explanations, analogies, and mathematical foundations.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="margin-bottom:1rem;">Learning Path Overview</div>
+        <div class="bar-chart-wrap">
+          <div class="bar-row">
+            <div class="bar-name">Phase 1: Foundations</div>
+            <div class="bar-track"><div class="bar-fill" style="width:100%; background:var(--green)">Data, Vectors, Linear Algebra</div></div>
+            <div class="bar-pct">4 topics</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-name">Phase 2: Algorithms</div>
+            <div class="bar-track"><div class="bar-fill" style="width:100%; background:var(--blue)">Regression, Trees, Classification</div></div>
+            <div class="bar-pct">5 topics</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-name">Phase 3: Learning</div>
+            <div class="bar-track"><div class="bar-fill" style="width:75%; background:var(--orange)">Loss, Gradients, Backprop</div></div>
+            <div class="bar-pct">3 topics</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-name">Phase 4: Neural Nets</div>
+            <div class="bar-track"><div class="bar-fill" style="width:75%; background:var(--purple)">Layers, Activations, Dropout</div></div>
+            <div class="bar-pct">3 topics</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-name">Phase 5: Evaluation</div>
+            <div class="bar-track"><div class="bar-fill" style="width:50%; background:var(--yellow); color:#000">Metrics, Bias-Variance</div></div>
+            <div class="bar-pct">2 topics</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-name">Phase 6: Advanced</div>
+            <div class="bar-track"><div class="bar-fill" style="width:50%; background:var(--accent)">CNN, Transformers, RL</div></div>
+            <div class="bar-pct">4 topics</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <a href="#" class="nav-btn disabled">← Previous</a>
+        <a href="#data-basics" class="nav-btn next-btn">Next: Data Basics →</a>
+      </div>
+    </div>
+
+    <!-- Data Basics -->
+    <div id="data-basics" class="content-container">
+      <div class="breadcrumb">
+        <a href="learn.html">Learn</a>
+        <span class="breadcrumb-separator">/</span>
+        <a href="ml-learn.html">Machine Learning</a>
+        <span class="breadcrumb-separator">/</span>
+        <span>Data Basics</span>
+      </div>
+      <h1 class="page-title">Data = Rows & Columns</h1>
+      <p class="page-subtitle">A dataset is a table. Each row = one example. Each column = one feature (piece of info).</p>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Understanding Datasets</div>
+            <div class="card-sub">The foundation of all machine learning</div>
+          </div>
+          <span class="difficulty-tag easy">BEGINNER</span>
+        </div>
+        <div class="analogy">Think of it like an Excel sheet. Each student = 1 row. Their marks, age, city = columns (features). The "Label" column is what we want to predict.</div>
+        <div class="bar-chart-wrap">
+          <div class="bar-row">
+            <div class="bar-name">Age (feature)</div>
+            <div class="bar-track"><div class="bar-fill" style="width:30%; background:var(--blue)">22</div></div>
+            <div class="bar-pct">num</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-name">Marks (feature)</div>
+            <div class="bar-track"><div class="bar-fill" style="width:75%; background:var(--green)">85%</div></div>
+            <div class="bar-pct">num</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-name">City (feature)</div>
+            <div class="bar-track"><div class="bar-fill" style="width:60%; background:var(--orange)">Delhi</div></div>
+            <div class="bar-pct">cat</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-name">Admitted? (label)</div>
+            <div class="bar-track"><div class="bar-fill" style="width:45%; background:var(--accent)">Yes/No</div></div>
+            <div class="bar-pct">target</div>
+          </div>
+        </div>
+        <div class="insight">Rule: <span>Features → Input to model. Label → What model must predict.</span></div>
+      </div>
+
+      <div class="nav-buttons">
+        <a href="#intro" class="nav-btn prev-btn">← Previous: Introduction</a>
+        <a href="#linear-relationship" class="nav-btn next-btn">Next: Linear Relationships →</a>
+      </div>
+    </div>
+
+    <!-- Continue with remaining topics... will add via script injection -->
+
+  </main>
+</div>
+
+<script>
+// Navigation between topics
+document.addEventListener('DOMContentLoaded', function() {
+  const topicLinks = document.querySelectorAll('.topic-link');
+  const contentContainers = document.querySelectorAll('.content-container');
+  
+  topicLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Remove active class from all links
+      topicLinks.forEach(l => l.classList.remove('active'));
+      
+      // Add active to clicked link
+      this.classList.add('active');
+      
+      // Hide all content
+      contentContainers.forEach(c => c.classList.remove('active'));
+      
+      // Show target content
+      const targetId = this.getAttribute('data-topic');
+      const targetContent = document.getElementById(targetId);
+      if (targetContent) {
+        targetContent.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      
+      // Update URL hash
+      window.location.hash = this.getAttribute('href');
+    });
+  });
+  
+  // Handle direct URL hash navigation
+  const hash = window.location.hash;
+  if (hash) {
+    const targetLink = document.querySelector(`a[href="${hash}"]`);
+    if (targetLink) {
+      targetLink.click();
+    }
+  }
+  
+  // Next/Previous button navigation
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('next-btn') || e.target.classList.contains('prev-btn')) {
+      e.preventDefault();
+      const targetHash = e.target.getAttribute('href');
+      const targetLink = document.querySelector(`a[href="${targetHash}"]`);
+      if (targetLink) {
+        targetLink.click();
+      }
+    }
+  });
+});
+</script>
+
+</body>
+</html>

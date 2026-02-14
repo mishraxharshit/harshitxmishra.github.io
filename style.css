@@ -1491,6 +1491,13 @@ cite {
     from { opacity: 0; transform: translateY(5px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* --- Journey Section --- */
+.journey-section {
+    padding: 4rem 0;
+    margin: 4rem 0;
+}
+
 /* --- Journey Timeline Logic --- */
 .journey-container {
     position: relative;
@@ -1587,9 +1594,22 @@ cite {
 
 /* Scroll Animation for Nodes */
 .journey-node-mature {
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 1;
+    transform: translateY(0);
     transition: all 0.8s ease-out;
+    animation: fadeInUp 0.8s ease-out forwards;
+    animation-delay: calc(var(--node-index, 0) * 0.2s);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .journey-node-mature.visible {
