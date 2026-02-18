@@ -182,15 +182,18 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe elements with fade-in class
+// Observe elements with fade-in class — only on desktop (hover capable devices)
 document.addEventListener('DOMContentLoaded', () => {
-    const elementsToAnimate = document.querySelectorAll('.project-card, .gallery-item');
-    elementsToAnimate.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
+    // Skip JS scroll animations on mobile to prevent blank content lag
+    if (window.matchMedia('(hover: hover) and (min-width: 601px)').matches) {
+        const elementsToAnimate = document.querySelectorAll('.project-card, .gallery-item');
+        elementsToAnimate.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    }
 });
 // AI Co-Lab Logic
 document.addEventListener('DOMContentLoaded', () => {
@@ -317,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const avatarZone = document.querySelector('.avatar-container');
 const statusDisplay = document.getElementById('status-text');
 
-if (avatarZone) {
+if (avatarZone && statusDisplay) {
     const dataInsights = [
         "ANALYSING DATA...",
         "PATTERN: EXPLORER",
@@ -327,18 +330,20 @@ if (avatarZone) {
     ];
 
     let currentIdx = 0;
+    let cycleText = null;
 
     avatarZone.addEventListener('mouseenter', () => {
-        // Change status text on hover
-        const cycleText = setInterval(() => {
+        // Change status text on hover - use 1500ms to be less CPU intensive
+        cycleText = setInterval(() => {
             statusDisplay.textContent = dataInsights[currentIdx];
             currentIdx = (currentIdx + 1) % dataInsights.length;
-        }, 1000);
+        }, 1500);
+    });
 
-        avatarZone.addEventListener('mouseleave', () => {
-            clearInterval(cycleText);
-            statusDisplay.textContent = "SYSTEM ACTIVE";
-        }, { once: true });
+    avatarZone.addEventListener('mouseleave', () => {
+        if (cycleText) clearInterval(cycleText);
+        cycleText = null;
+        statusDisplay.textContent = "SYSTEM ACTIVE";
     });
 }
 document.addEventListener('DOMContentLoaded', () => {
@@ -394,8 +399,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Randomly pulsating the last node's light to show life's uncertainty
     const activeMarker = document.querySelector('.active-node .node-marker-inner');
     if (activeMarker) {
-        setInterval(() => {
-            activeMarker.style.opacity = Math.random() > 0.5 ? "1" : "0.3";
-        }, 1000);
+        // Only animate on desktop to save mobile battery/CPU
+        if (window.matchMedia('(hover: hover)').matches) {
+            setInterval(() => {
+                activeMarker.style.opacity = Math.random() > 0.5 ? "1" : "0.3";
+            }, 2000);
+        }
     }
 });

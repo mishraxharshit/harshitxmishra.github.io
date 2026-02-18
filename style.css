@@ -58,9 +58,9 @@ body {
 .main-nav {
     position: sticky;
     top: 0;
-    background: rgba(250, 249, 247, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(250, 249, 247, 0.97);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border-bottom: 1px solid var(--color-border);
     padding: 0 var(--spacing-md);
     height: var(--nav-h);
@@ -394,6 +394,7 @@ main {
     border-radius: 50%;
     opacity: 0.3;
     animation: rotatePortal 10s linear infinite;
+    will-change: transform;
 }
 
 @keyframes rotatePortal {
@@ -477,11 +478,12 @@ main {
 .insight-card {
     position: absolute;
     bottom: 0;
-    left: -20px;
+    left: 0;
     background: white;
     border: 1px solid var(--color-border);
     padding: 15px;
-    min-width: 200px;
+    min-width: 180px;
+    max-width: calc(100% - 10px);
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     transform: rotate(-2deg);
     transition: all 0.4s ease;
@@ -1290,6 +1292,9 @@ footer {
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: -4px 0 20px rgba(0,0,0,0.1);
         overflow-y: auto;
+        /* Remove backdrop filter on mobile nav for performance */
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
     }
 
     .nav-right.open {
@@ -1315,8 +1320,6 @@ footer {
         padding: 0.8rem 0;
         width: 100%;
         border-bottom: 1px solid var(--color-border);
-        display: block;
-        /* Bigger tap targets */
         min-height: 48px;
         display: flex;
         align-items: center;
@@ -1342,13 +1345,28 @@ footer {
     /* HERO */
     .hero { min-height: auto; padding: 2rem 0 3rem; }
 
-    .hero-grid { gap: 1.5rem; }
+    .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
 
     .hero h1 { font-size: clamp(2.5rem, 12vw, 4rem); margin-bottom: 1rem; }
 
-    .hero-visual { order: -1; padding-bottom: 55px; }
+    .hero-visual {
+        order: -1;
+        padding-bottom: 60px;
+        overflow: hidden; /* Prevent negative-positioned children from overflowing */
+    }
 
-    .ai-avatar-portal { width: 200px; height: 200px; }
+    .ai-avatar-portal { width: 180px; height: 180px; }
+
+    /* Disable heavy hover-only animations on mobile */
+    .portal-ring {
+        animation: none;
+        opacity: 0.2;
+    }
+
+    .scan-horizontal { display: none; }
 
     .ai-status-badge {
         top: 5px;
@@ -1358,14 +1376,16 @@ footer {
     }
 
     .insight-card {
-        left: 0px;
-        bottom: 5px;
-        min-width: 160px;
-        padding: 10px 12px;
+        left: 0;
+        bottom: 0;
+        min-width: 140px;
+        max-width: 90%;
+        padding: 8px 10px;
+        transform: rotate(0deg); /* no tilt on mobile */
     }
 
-    .insight-card .monospace { font-size: 0.7rem; }
-    .insight-data { font-size: 0.75rem; }
+    .insight-card .monospace { font-size: 0.65rem; }
+    .insight-data { font-size: 0.7rem; }
 
     .hero-description {
         padding: 1rem;
@@ -1462,6 +1482,47 @@ footer {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
+}
+
+/* ==========================================
+   MOBILE PERFORMANCE
+   Disable expensive continuous animations on
+   touch devices to prevent lag/jank
+   ========================================== */
+
+@media (max-width: 600px) and (hover: none) {
+    /* Stop the continuous spinning portal ring */
+    .portal-ring { animation: none !important; }
+
+    /* Stop pulse-ring which fires continuously */
+    .pulse-dot::after { animation: none !important; }
+
+    /* Disable the location text cycling animation */
+    .location-swap::after { animation: none !important; content: "Indore, India"; }
+
+    /* Disable fade-in entry animations that cause reflows */
+    .fade-in,
+    .fade-in-delay-1,
+    .fade-in-delay-2,
+    .fade-in-delay-3 {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    /* Simplify nav blur — not needed on small screen */
+    .main-nav {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(250, 249, 247, 0.99);
+    }
+
+    /* Disable gallery image hover zoom — no hover on touch */
+    .gallery-item img { transition: none; }
+    .gallery-item:hover img { transform: none; }
+
+    /* Disable node content box hover slide */
+    .journey-node-mature:hover .node-content-box { transform: none; }
 }
 
 /* Focus styles for keyboard nav */
