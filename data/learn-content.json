@@ -679,7 +679,7 @@
       "id": "web",
       "title": "Web Development",
       "icon": "WEB",
-      "file": "course.html?id=web",
+      "file": null,
       "comingSoon": true,
       "phases": []
     },
@@ -687,7 +687,7 @@
       "id": "ds",
       "title": "Data Science",
       "icon": "DS",
-      "file": "course.html?id=ds",
+      "file": null,
       "comingSoon": true,
       "phases": []
     },
@@ -695,7 +695,7 @@
       "id": "sys",
       "title": "Systems & Architecture",
       "icon": "SYS",
-      "file": "course.html?id=sys",
+      "file": null,
       "comingSoon": true,
       "phases": []
     },

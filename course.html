@@ -221,9 +221,9 @@ let cardCounter = 0;
 // ── Init ──────────────────────────────────
 async function init() {
   try {
-    const res    = await fetch('data/learn-content.json');
+    const res    = await fetch(`data/${courseId}-content.json`);
     const data   = await res.json();
-    const course = data.courses.find(c => c.id === courseId);
+    const course = data.course ?? data.courses?.[0];
     if (!course) { showNotFound(courseId); return; }
     document.title = `${course.title} — Learn`;
     buildSidebar(course);

@@ -1,0 +1,75 @@
+{
+  "course": {
+    "id": "physics",
+    "title": "Physics",
+    "icon": "PHY",
+    "file": "course.html?id=physics",
+    "comingSoon": false,
+    "phases": [
+      {
+        "label": "Phase 1: Mechanics",
+        "color": "#1D6FA4",
+        "topics": [
+          {
+            "id": "phy-intro",
+            "title": "Introduction",
+            "breadcrumb": "Introduction",
+            "pageTitle": "Physics Visual Map",
+            "pageSubtitle": "From Newton laws to quantum mechanics. Every concept with visuals.",
+            "cards": [
+              {
+                "type": "standard",
+                "title": "What is Physics?",
+                "sub": "The science of matter, energy, space and time",
+                "difficulty": "easy",
+                "body": "Physics explains how the universe works at every scale \u2014 from subatomic particles to galaxies. It uses mathematics to model natural phenomena precisely.",
+                "analogy": "If the universe is a machine, physics is its instruction manual. Every gear, lever, and spring follows rules that physicists have been discovering for centuries.",
+                "insight": "This course covers <span>mechanics, waves, thermodynamics, and electromagnetism</span> \u2014 the four pillars of classical physics."
+              }
+            ]
+          },
+          {
+            "id": "phy-newtons-laws",
+            "title": "Newton's Laws",
+            "breadcrumb": "Newton's Laws",
+            "pageTitle": "Newton's Three Laws",
+            "pageSubtitle": "The foundation of classical mechanics \u2014 how objects move and interact.",
+            "cards": [
+              {
+                "type": "barchart",
+                "title": "Three Laws at a Glance",
+                "sub": "Each law builds on the previous",
+                "difficulty": "easy",
+                "analogy": "1st Law: A sleeping cat stays asleep until disturbed. 2nd Law: Harder to push a heavy cat than a light one. 3rd Law: When cat scratches you, you scratch the cat back (equal force).",
+                "bars": [
+                  {
+                    "name": "1st Law (Inertia)",
+                    "width": 100,
+                    "color": "var(--blue)",
+                    "label": "Objects resist change in motion",
+                    "meta": "F=0"
+                  },
+                  {
+                    "name": "2nd Law (F=ma)",
+                    "width": 100,
+                    "color": "var(--green)",
+                    "label": "Force = mass \u00d7 acceleration",
+                    "meta": "F=ma"
+                  },
+                  {
+                    "name": "3rd Law (Action)",
+                    "width": 100,
+                    "color": "var(--orange)",
+                    "label": "Every action has equal reaction",
+                    "meta": "F\u2081=-F\u2082"
+                  }
+                ],
+                "insight": "These three laws explain <span>everything from a falling apple to a rocket launch</span>."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
