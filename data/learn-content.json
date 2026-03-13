@@ -674,30 +674,6 @@
           ]
         }
       ]
-    },
-    {
-      "id": "web",
-      "title": "Web Development",
-      "icon": "WEB",
-      "file": null,
-      "comingSoon": true,
-      "phases": []
-    },
-    {
-      "id": "ds",
-      "title": "Data Science",
-      "icon": "DS",
-      "file": null,
-      "comingSoon": true,
-      "phases": []
-    },
-    {
-      "id": "sys",
-      "title": "Systems & Architecture",
-      "icon": "SYS",
-      "file": null,
-      "comingSoon": true,
-      "phases": []
     }
   ]
 }
