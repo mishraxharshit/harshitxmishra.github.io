@@ -311,7 +311,7 @@ main {
 @keyframes location-cycle {
     0%, 45% { content: "France"; opacity: 1; }
     50% { opacity: 0; }
-    55%, 95% { content: "India"; opacity: 1; }
+    55%, 95% { content: "France"; opacity: 1; }
     100% { opacity: 0; }
 }
 
