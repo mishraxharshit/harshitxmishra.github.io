@@ -250,36 +250,6 @@
             <div class="loading">Loading courses...</div>
         </div>
     </main>
-
-    <!-- Research Panel (arXiv) -->
-    <aside class="research-panel">
-        <div class="panel-header">
-            <div class="panel-title">Latest Research</div>
-            <div class="panel-subtitle">Recent papers from arXiv</div>
-        </div>
-        <div class="stat-grid">
-            <div class="stat-box">
-                <div class="stat-number" id="paperCount">—</div>
-                <div class="stat-label">Papers</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-number" id="updateTime">Today</div>
-                <div class="stat-label">Updated</div>
-            </div>
-        </div>
-        <div class="filter-tabs">
-            <button class="filter-tab active" data-filter="all">All</button>
-            <button class="filter-tab" data-filter="lg">ML</button>
-            <button class="filter-tab" data-filter="cv">Vision</button>
-            <button class="filter-tab" data-filter="cl">NLP</button>
-        </div>
-        <div id="researchContainer">
-            <div class="loading">Loading latest research...</div>
-        </div>
-    </aside>
-
-</div>
-
 <script>
 // ==========================================
 // JSON-DRIVEN LEARN PAGE
@@ -373,72 +343,6 @@ function buildLearningPath(courses) {
   
   path.innerHTML = html;
 }
-
-// ==========================================
-// arXiv Research Panel
-// ==========================================
-async function fetchArXivPapers() {
-    const container = document.getElementById('researchContainer');
-    try {
-        const query = 'cat:cs.AI OR cat:cs.LG OR cat:cs.CV OR cat:cs.CL';
-        const url = `https://export.arxiv.org/api/query?search_query=${encodeURIComponent(query)}&start=0&max_results=12&sortBy=submittedDate&sortOrder=descending`;
-        const response = await fetch(url);
-        const xmlText = await response.text();
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(xmlText, 'text/xml');
-        const entries = xml.querySelectorAll('entry');
-        
-        container.innerHTML = '';
-        entries.forEach(entry => {
-            const title = entry.querySelector('title').textContent.trim();
-            const summary = entry.querySelector('summary').textContent.trim();
-            const link = entry.querySelector('id').textContent;
-            const published = entry.querySelector('published').textContent;
-            const authors = entry.querySelectorAll('author name');
-            const category = entry.querySelector('category');
-            const catTerm = category ? category.getAttribute('term').split('.')[1].toLowerCase() : 'ml';
-            const isNew = (Date.now() - new Date(published).getTime()) < (3 * 24 * 60 * 60 * 1000);
-            
-            const card = document.createElement('div');
-            card.className = 'research-card';
-            card.setAttribute('data-category', catTerm);
-            card.innerHTML = `
-                <div class="research-meta">
-                    ${isNew ? '<span class="research-badge new">NEW</span>' : ''}
-                    <span class="research-badge">${catTerm.toUpperCase()}</span>
-                    <span class="research-badge">${authors.length} authors</span>
-                </div>
-                <div class="research-title">${title.substring(0, 80)}${title.length > 80 ? '...' : ''}</div>
-                <div class="research-summary">${summary.substring(0, 120)}...</div>
-                <div class="research-footer">
-                    <span>${new Date(published).toLocaleDateString('en-US', {month:'short', day:'numeric'})}</span>
-                    <a href="${link}" target="_blank" class="research-link">Read →</a>
-                </div>`;
-            card.addEventListener('click', e => { if (!e.target.classList.contains('research-link')) window.open(link, '_blank'); });
-            container.appendChild(card);
-        });
-        
-        document.getElementById('paperCount').textContent = entries.length;
-    } catch(err) {
-        container.innerHTML = `<div class="loading">Could not load papers. Check connection.</div>`;
-    }
-}
-
-document.querySelectorAll('.filter-tab').forEach(tab => {
-    tab.addEventListener('click', function() {
-        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-        const filter = this.getAttribute('data-filter');
-        document.querySelectorAll('.research-card').forEach(card => {
-            card.style.display = (filter === 'all' || card.getAttribute('data-category') === filter) ? 'block' : 'none';
-        });
-    });
-});
-
-// Init
-initLearnPage();
-fetchArXivPapers();
-setInterval(fetchArXivPapers, 5 * 60 * 1000);
 </script>
 
 </body>

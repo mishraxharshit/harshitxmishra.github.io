@@ -58,57 +58,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loadPosts();
 });
 
-// Load Projects from JSON
-async function loadProjects() {
-    try {
-        const response = await fetch('data/projects.json');
-        const data = await response.json();
-        const projectsGrid = document.getElementById('projects-grid');
-        
-        if (!projectsGrid) return;
-        
-        projectsGrid.innerHTML = '';
-        
-        data.projects.forEach((project, index) => {
-            const projectCard = document.createElement('div');
-            projectCard.className = 'project-card';
-            projectCard.style.animationDelay = `${index * 0.1}s`;
-            
-            projectCard.innerHTML = `
-                <div class="project-header">
-                    <h3 class="project-title">${project.title}</h3>
-                    <div class="project-meta">
-                        <span>${formatDate(project.date)}</span>
-                        ${project.tags.map(tag => `<span>•</span><span>${tag}</span>`).join('')}
-                    </div>
-                </div>
-                <div class="project-content">
-                    <p class="project-description">${project.description}</p>
-                    <div class="project-tags">
-                        ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                    </div>
-                </div>
-                <div class="color-accent-bar" style="background-color: ${project.color}"></div>
-            `;
-            
-            // Add click handler for links
-            if (project.link && project.link !== '#') {
-                projectCard.style.cursor = 'pointer';
-                projectCard.addEventListener('click', () => {
-                    window.open(project.link, '_blank');
-                });
-            }
-            
-            projectsGrid.appendChild(projectCard);
-        });
-    } catch (error) {
-        console.error('Error loading projects:', error);
-        const projectsGrid = document.getElementById('projects-grid');
-        if (projectsGrid) {
-            projectsGrid.innerHTML = '<p style="color: var(--color-secondary);">Projects loading... Check GitHub for latest work.</p>';
-        }
-    }
-}
 
 // Load Blog Posts from JSON
 async function loadPosts() {

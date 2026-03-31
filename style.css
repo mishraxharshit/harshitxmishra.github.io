@@ -1498,7 +1498,7 @@ footer {
     .pulse-dot::after { animation: none !important; }
 
     /* Disable the location text cycling animation */
-    .location-swap::after { animation: none !important; content: "Indore, India"; }
+    .location-swap::after { animation: none !important; content: "France"; }
 
     /* Disable fade-in entry animations that cause reflows */
     .fade-in,
