@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const insights = [
         "Subject: Harshit. Traits: High-level curiosity detected.",
         "Encoding Style: Pixel Perfect. Status: Building the future.",
-        "Location: Indore Node. Neural Network: Optimized.",
+        "Location: France Node. Neural Network: Optimized.",
         "Activity: Documenting Wildlife & Distributed Systems.",
         "Gemini Note: Subject likes clean code and sharp pixels."
     ];
@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "Detected: High Proficiency in JS/Python.",
         "Mode: Creative Explorer. Status: Active.",
         "Tech Stack: Modern. Vibe: Minimalist.",
-        "Indore Node: Online. Latency: 5ms."
+        "France Node: Online. Latency: 5ms."
     ];
 
     if (visual) {
@@ -274,7 +274,7 @@ if (avatarZone && statusDisplay) {
         "ANALYSING DATA...",
         "PATTERN: EXPLORER",
         "BIO: DEVELOPER",
-        "LOCATION: INDORE",
+        "LOCATION: France",
         "READY TO BUILD"
     ];
 
