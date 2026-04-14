@@ -1,0 +1,679 @@
+{
+  "courses": [
+    {
+      "id": "ml",
+      "title": "Machine Learning",
+      "icon": "ML",
+      "file": "course.html?id=ml",
+      "phases": [
+        {
+          "label": "Phase 1: Foundations",
+          "color": "#2A9D5C",
+          "topics": [
+            {
+              "id": "intro",
+              "title": "Introduction",
+              "breadcrumb": "Introduction",
+              "pageTitle": "Machine Learning Visual Map",
+              "pageSubtitle": "Every core concept explained with visualizations. From basic mathematics to advanced neural networks.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "What is Machine Learning?",
+                  "sub": "Teaching computers to learn patterns from data without explicit programming",
+                  "difficulty": null,
+                  "body": "Machine Learning is a subset of artificial intelligence that enables systems to learn and improve from experience. Instead of being explicitly programmed for every task, ML algorithms build mathematical models based on sample data to make predictions or decisions.",
+                  "analogy": "Think of it like teaching a child to recognize animals. Instead of programming rules like \"if it has four legs and barks, it's a dog,\" we show the child thousands of pictures of dogs. Eventually, the child learns the pattern and can identify new dogs they've never seen before.",
+                  "insight": "This guide covers <span>20 fundamental concepts</span> across 6 progressive phases. Each concept includes visual explanations, analogies, and mathematical foundations."
+                },
+                {
+                  "type": "barchart",
+                  "title": "Learning Path Overview",
+                  "bars": [
+                    {
+                      "name": "Phase 1: Foundations",
+                      "width": 100,
+                      "color": "var(--green)",
+                      "label": "Data, Vectors, Linear Algebra",
+                      "meta": "4 topics"
+                    },
+                    {
+                      "name": "Phase 2: Algorithms",
+                      "width": 100,
+                      "color": "var(--blue)",
+                      "label": "Regression, Trees, Classification",
+                      "meta": "5 topics"
+                    },
+                    {
+                      "name": "Phase 3: Learning",
+                      "width": 75,
+                      "color": "var(--orange)",
+                      "label": "Loss, Gradients, Backprop",
+                      "meta": "3 topics"
+                    },
+                    {
+                      "name": "Phase 4: Neural Nets",
+                      "width": 75,
+                      "color": "var(--purple)",
+                      "label": "Layers, Activations, Dropout",
+                      "meta": "3 topics"
+                    },
+                    {
+                      "name": "Phase 5: Evaluation",
+                      "width": 50,
+                      "color": "var(--yellow)",
+                      "label": "Metrics, Bias-Variance",
+                      "meta": "2 topics",
+                      "labelColor": "#000"
+                    },
+                    {
+                      "name": "Phase 6: Advanced",
+                      "width": 50,
+                      "color": "var(--accent)",
+                      "label": "CNN, Transformers, RL",
+                      "meta": "4 topics"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "data-basics",
+              "title": "Data Basics",
+              "breadcrumb": "Data Basics",
+              "pageTitle": "Data = Rows & Columns",
+              "pageSubtitle": "A dataset is a table. Each row = one example. Each column = one feature (piece of info).",
+              "cards": [
+                {
+                  "type": "barchart",
+                  "title": "Understanding Datasets",
+                  "sub": "The foundation of all machine learning",
+                  "difficulty": "easy",
+                  "analogy": "Think of it like an Excel sheet. Each student = 1 row. Their marks, age, city = columns (features). The \"Label\" column is what we want to predict.",
+                  "bars": [
+                    {
+                      "name": "Age (feature)",
+                      "width": 30,
+                      "color": "var(--blue)",
+                      "label": "22",
+                      "meta": "num"
+                    },
+                    {
+                      "name": "Marks (feature)",
+                      "width": 75,
+                      "color": "var(--green)",
+                      "label": "85%",
+                      "meta": "num"
+                    },
+                    {
+                      "name": "City (feature)",
+                      "width": 60,
+                      "color": "var(--orange)",
+                      "label": "Delhi",
+                      "meta": "cat"
+                    },
+                    {
+                      "name": "Admitted? (label)",
+                      "width": 45,
+                      "color": "var(--accent)",
+                      "label": "Yes/No",
+                      "meta": "target"
+                    }
+                  ],
+                  "insight": "Rule: <span>Features \u2192 Input to model. Label \u2192 What model must predict.</span>"
+                }
+              ]
+            },
+            {
+              "id": "linear-relationship",
+              "title": "Linear Relationships",
+              "breadcrumb": "Linear Relationships",
+              "pageTitle": "Linear Relationships",
+              "pageSubtitle": "The simplest pattern in data \u2014 a straight line relationship between two variables.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "What is a Linear Relationship?",
+                  "sub": "When one variable changes, the other changes proportionally",
+                  "difficulty": "easy",
+                  "body": "A linear relationship means that as one variable increases, the other increases (or decreases) at a constant rate. This is the foundation of linear regression and many ML algorithms.",
+                  "analogy": "If you drive at 60 km/h, then: 1 hour = 60km, 2 hours = 120km, 3 hours = 180km. The relationship between time and distance is perfectly linear.",
+                  "formula": "y = mx + b  \u2192  output = (slope \u00d7 input) + bias",
+                  "insight": "Nearly every ML algorithm starts with this assumption. <span>Even neural networks are stacks of linear + non-linear operations.</span>"
+                }
+              ]
+            },
+            {
+              "id": "vectors",
+              "title": "Vectors",
+              "breadcrumb": "Vectors",
+              "pageTitle": "Vectors",
+              "pageSubtitle": "A vector is just a list of numbers. In ML, every data point is a vector.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "Understanding Vectors",
+                  "sub": "The language of machine learning",
+                  "difficulty": "easy",
+                  "body": "A vector is an ordered list of numbers. In ML, a data point (one row in your dataset) is represented as a vector. Each number in the vector corresponds to one feature.",
+                  "analogy": "A person's profile: [Age=25, Height=175, Weight=70, Score=85]. This is a 4-dimensional vector representing one person. ML models work with millions of such vectors.",
+                  "insight": "<span>Every image, sentence, or data point</span> in machine learning is ultimately represented as a vector of numbers."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Phase 2: Core Algorithms",
+          "color": "#1D6FA4",
+          "topics": [
+            {
+              "id": "linear-regression",
+              "title": "Linear Regression",
+              "breadcrumb": "Linear Regression",
+              "pageTitle": "Linear Regression",
+              "pageSubtitle": "Predict a continuous number by fitting the best straight line through data.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "Linear Regression",
+                  "sub": "Predict continuous values with a line of best fit",
+                  "difficulty": "easy",
+                  "body": "Linear regression finds the line that best fits your data points. It minimizes the total distance between the line and all data points (called residuals). Once trained, you can predict any output by plugging in new input values.",
+                  "analogy": "House prices: given size (sq ft), predict price. You draw the best line through your data, then for any new house size, you read the price from the line.",
+                  "formula": "\u0177 = \u03b8\u2080 + \u03b8\u2081x\u2081 + \u03b8\u2082x\u2082 + ... + \u03b8\u2099x\u2099",
+                  "insight": "Used when output is <span>continuous</span> (price, temperature, score). If output is yes/no \u2192 use Logistic Regression."
+                }
+              ]
+            },
+            {
+              "id": "logistic-regression",
+              "title": "Logistic Regression",
+              "breadcrumb": "Logistic Regression",
+              "pageTitle": "Logistic Regression",
+              "pageSubtitle": "Classify into categories by predicting probability between 0 and 1.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "Logistic Regression",
+                  "sub": "Binary classification using a sigmoid function",
+                  "difficulty": "medium",
+                  "body": "Despite the name, logistic regression is used for classification. It squashes the output of a linear function into a probability between 0 and 1 using the sigmoid function. If probability > 0.5, predict class 1.",
+                  "analogy": "Email spam filter: given word counts and sender info, it outputs a probability 0-1. If >0.5 \u2192 spam. The sigmoid curve creates an S-shaped decision boundary.",
+                  "formula": "\u03c3(z) = 1 / (1 + e\u207b\u1dbb)   where z = \u03b8\u1d40x",
+                  "insight": "The sigmoid output is a <span>probability</span>. It never goes below 0 or above 1 \u2014 perfect for classification."
+                }
+              ]
+            },
+            {
+              "id": "decision-trees",
+              "title": "Decision Trees",
+              "breadcrumb": "Decision Trees",
+              "pageTitle": "Decision Trees",
+              "pageSubtitle": "Make decisions by asking a series of yes/no questions about features.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "Decision Trees",
+                  "sub": "Hierarchical yes/no question structure",
+                  "difficulty": "medium",
+                  "body": "A decision tree splits data by asking questions about features. At each node, it picks the feature that best separates the classes. It continues splitting until it reaches a leaf node with a prediction.",
+                  "analogy": "Doctors diagnosing: \"Fever > 38\u00b0C? \u2192 Yes: Does patient have cough? \u2192 Yes: Flu likely.\" Each branch is a decision based on a feature value.",
+                  "insight": "Decision trees are <span>interpretable</span> \u2014 you can see exactly why a prediction was made. Random Forests combine many trees for better accuracy."
+                }
+              ]
+            },
+            {
+              "id": "overfitting",
+              "title": "Overfitting vs Underfitting",
+              "breadcrumb": "Overfitting",
+              "pageTitle": "Overfitting vs Underfitting",
+              "pageSubtitle": "The central challenge of ML \u2014 finding the balance between too simple and too complex.",
+              "cards": [
+                {
+                  "type": "barchart",
+                  "title": "The Bias-Variance Tradeoff in Practice",
+                  "sub": "Model complexity vs generalization",
+                  "difficulty": "medium",
+                  "analogy": "Underfitting = memorizing only chapter titles for an exam. Overfitting = memorizing every word but unable to answer paraphrased questions. Ideal = understanding concepts deeply.",
+                  "bars": [
+                    {
+                      "name": "Underfitting",
+                      "width": 30,
+                      "color": "var(--blue)",
+                      "label": "Too simple, high bias",
+                      "meta": "bad"
+                    },
+                    {
+                      "name": "Good Fit",
+                      "width": 85,
+                      "color": "var(--green)",
+                      "label": "Just right!",
+                      "meta": "ideal"
+                    },
+                    {
+                      "name": "Overfitting",
+                      "width": 100,
+                      "color": "var(--accent)",
+                      "label": "Too complex, high variance",
+                      "meta": "bad"
+                    }
+                  ],
+                  "insight": "Solution to overfitting: <span>more data, dropout, regularization, simpler model</span>."
+                }
+              ]
+            },
+            {
+              "id": "train-test-split",
+              "title": "Train/Test Split",
+              "breadcrumb": "Train/Test Split",
+              "pageTitle": "Train / Test Split",
+              "pageSubtitle": "Always evaluate your model on data it has never seen before.",
+              "cards": [
+                {
+                  "type": "barchart",
+                  "title": "Splitting Your Data",
+                  "sub": "How to properly evaluate model performance",
+                  "difficulty": "easy",
+                  "analogy": "School exam: you study from the textbook (train set), but the exam questions are new (test set). If your teacher gives you the exam questions to study from \u2014 that's data leakage!",
+                  "bars": [
+                    {
+                      "name": "Training Set",
+                      "width": 80,
+                      "color": "var(--blue)",
+                      "label": "80% \u2014 model learns from this",
+                      "meta": "80%"
+                    },
+                    {
+                      "name": "Test Set",
+                      "width": 20,
+                      "color": "var(--accent)",
+                      "label": "20% \u2014 evaluate here",
+                      "meta": "20%"
+                    }
+                  ],
+                  "insight": "Golden rule: <span>Never touch the test set until final evaluation.</span> Use validation set for tuning."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Phase 3: Learning Process",
+          "color": "#E07B27",
+          "topics": [
+            {
+              "id": "loss-functions",
+              "title": "Loss Functions",
+              "breadcrumb": "Loss Functions",
+              "pageTitle": "Loss Functions",
+              "pageSubtitle": "How does the model know how wrong it is? The loss function measures the error.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "What is a Loss Function?",
+                  "sub": "The score of how wrong your model is",
+                  "difficulty": "medium",
+                  "body": "A loss function computes a single number representing how far the model's predictions are from the actual values. The goal of training is to minimize this number. Different tasks use different loss functions.",
+                  "analogy": "Golf score \u2014 the lower, the better. Every training step, the model checks its 'score' and tries to reduce it. Loss = 0 means perfect predictions.",
+                  "formula": "MSE = (1/n) \u03a3(y\u1d62 - \u0177\u1d62)\u00b2   |   BCE = -[y log(p) + (1-y) log(1-p)]",
+                  "insight": "Regression uses <span>MSE (Mean Squared Error)</span>. Classification uses <span>Cross-Entropy Loss</span>."
+                }
+              ]
+            },
+            {
+              "id": "gradient-descent",
+              "title": "Gradient Descent",
+              "breadcrumb": "Gradient Descent",
+              "pageTitle": "Gradient Descent",
+              "pageSubtitle": "The optimization algorithm that trains every neural network.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "Gradient Descent",
+                  "sub": "Walking downhill to minimize loss",
+                  "difficulty": "medium",
+                  "body": "Gradient descent iteratively adjusts model weights by computing the gradient (slope) of the loss function. It moves in the direction that decreases loss. Learning rate controls step size.",
+                  "analogy": "You're blindfolded on a mountain. To reach the valley (minimum loss), you feel the slope around you and step in the steepest downhill direction. Repeat until you're at the bottom.",
+                  "formula": "\u03b8 = \u03b8 - \u03b1 \u00d7 \u2207L(\u03b8)   (\u03b1 = learning rate)",
+                  "insight": "Too large learning rate = <span>overshoot, diverge</span>. Too small = <span>very slow training</span>. Adam optimizer adapts it automatically."
+                }
+              ]
+            },
+            {
+              "id": "backpropagation",
+              "title": "Backpropagation",
+              "breadcrumb": "Backpropagation",
+              "pageTitle": "Backpropagation",
+              "pageSubtitle": "How error signals flow backward through a neural network to update weights.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "Backpropagation",
+                  "sub": "The chain rule applied to neural networks",
+                  "difficulty": "hard",
+                  "body": "Backpropagation computes gradients layer by layer, starting from the output loss and moving backward using the chain rule of calculus. Each weight receives a gradient telling it how much to change to reduce loss.",
+                  "analogy": "A factory assembly line: a product has a defect. The manager traces backward \u2014 was it packing? \u2192 assembly? \u2192 raw materials? Each step gets a 'blame score' and adjusts its process.",
+                  "insight": "Backprop + Gradient Descent = <span>how all deep learning models are trained</span>. Without it, training a neural network would be impossible."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Phase 4: Neural Networks",
+          "color": "#7B5EA7",
+          "topics": [
+            {
+              "id": "neural-networks",
+              "title": "Neural Network Anatomy",
+              "breadcrumb": "Neural Networks",
+              "pageTitle": "Neural Network Anatomy",
+              "pageSubtitle": "Layers of interconnected nodes that transform input data into predictions.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "Anatomy of a Neural Network",
+                  "sub": "Input \u2192 Hidden Layers \u2192 Output",
+                  "difficulty": "medium",
+                  "body": "A neural network consists of layers of neurons. The input layer receives data, hidden layers transform it through weighted connections and activations, and the output layer produces the prediction. Each neuron computes a weighted sum of inputs, adds a bias, then applies an activation function.",
+                  "analogy": "Like the human brain \u2014 neurons fire signals to connected neurons. Strong connections = high weights. If the signal is strong enough, the neuron activates and passes it forward.",
+                  "insight": "<span>Depth</span> (more layers) lets networks learn complex abstractions. Width (more neurons per layer) increases capacity within each level."
+                }
+              ]
+            },
+            {
+              "id": "activations",
+              "title": "Activation Functions",
+              "breadcrumb": "Activations",
+              "pageTitle": "Activation Functions",
+              "pageSubtitle": "Non-linear functions that let neural networks learn complex patterns.",
+              "cards": [
+                {
+                  "type": "barchart",
+                  "title": "Common Activation Functions",
+                  "sub": "Each serves a different purpose",
+                  "difficulty": "medium",
+                  "analogy": "Without activation functions, a 100-layer network would collapse into a single linear equation. Activations add the 'bends' that let networks fit complex curves.",
+                  "bars": [
+                    {
+                      "name": "ReLU",
+                      "width": 90,
+                      "color": "var(--green)",
+                      "label": "max(0,x) \u2014 most common hidden layer",
+                      "meta": "fast"
+                    },
+                    {
+                      "name": "Sigmoid",
+                      "width": 70,
+                      "color": "var(--blue)",
+                      "label": "0\u21921 output probability",
+                      "meta": "binary"
+                    },
+                    {
+                      "name": "Tanh",
+                      "width": 75,
+                      "color": "var(--orange)",
+                      "label": "-1\u21921 centered output",
+                      "meta": "RNN"
+                    },
+                    {
+                      "name": "Softmax",
+                      "width": 85,
+                      "color": "var(--purple)",
+                      "label": "multi-class probabilities",
+                      "meta": "output"
+                    }
+                  ],
+                  "insight": "<span>ReLU</span> is the default for hidden layers. <span>Softmax</span> for multi-class output. <span>Sigmoid</span> for binary output."
+                }
+              ]
+            },
+            {
+              "id": "dropout",
+              "title": "Dropout",
+              "breadcrumb": "Dropout",
+              "pageTitle": "Dropout",
+              "pageSubtitle": "Randomly deactivate neurons during training to prevent overfitting.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "Dropout Regularization",
+                  "sub": "Randomly zero out neurons during training",
+                  "difficulty": "medium",
+                  "body": "During each training step, dropout randomly sets a fraction of neuron outputs to zero. This prevents neurons from co-adapting too closely, forcing the network to learn more robust, redundant features. Dropout is only applied during training, not inference.",
+                  "analogy": "A sports team where random players sit out each practice. Each player must develop independent skills rather than relying on others. The full team performs better in real games.",
+                  "insight": "Dropout rate of <span>0.2\u20130.5</span> is standard. Higher for larger networks. Always disable during evaluation/inference."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Phase 5: Evaluation",
+          "color": "#D4A017",
+          "topics": [
+            {
+              "id": "confusion-matrix",
+              "title": "Confusion Matrix",
+              "breadcrumb": "Confusion Matrix",
+              "pageTitle": "Confusion Matrix",
+              "pageSubtitle": "A table showing true positives, false positives, true negatives, and false negatives.",
+              "cards": [
+                {
+                  "type": "barchart",
+                  "title": "Classification Metrics",
+                  "sub": "Derived from the confusion matrix",
+                  "difficulty": "medium",
+                  "analogy": "COVID test: True Positive = sick person correctly identified. False Negative = sick person missed (dangerous!). Accuracy alone is misleading when classes are imbalanced.",
+                  "bars": [
+                    {
+                      "name": "Accuracy",
+                      "width": 80,
+                      "color": "var(--blue)",
+                      "label": "(TP+TN) / Total",
+                      "meta": "overall"
+                    },
+                    {
+                      "name": "Precision",
+                      "width": 70,
+                      "color": "var(--green)",
+                      "label": "TP / (TP+FP)",
+                      "meta": "spam"
+                    },
+                    {
+                      "name": "Recall",
+                      "width": 75,
+                      "color": "var(--orange)",
+                      "label": "TP / (TP+FN)",
+                      "meta": "cancer"
+                    },
+                    {
+                      "name": "F1 Score",
+                      "width": 72,
+                      "color": "var(--purple)",
+                      "label": "Harmonic mean of P & R",
+                      "meta": "balance"
+                    }
+                  ],
+                  "insight": "Use <span>Recall</span> when false negatives are costly (medical). Use <span>Precision</span> when false positives are costly (spam)."
+                }
+              ]
+            },
+            {
+              "id": "bias-variance",
+              "title": "Bias vs Variance",
+              "breadcrumb": "Bias vs Variance",
+              "pageTitle": "Bias vs Variance",
+              "pageSubtitle": "The fundamental tension in machine learning model design.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "Bias-Variance Tradeoff",
+                  "sub": "Every model lives somewhere on this spectrum",
+                  "difficulty": "hard",
+                  "body": "Bias = error from wrong assumptions (model too simple). Variance = error from sensitivity to training data (model too complex). As you reduce bias, variance typically increases. The goal is to find the sweet spot.",
+                  "analogy": "Archery: High bias = always hitting left of target (systematic error, bad aim). High variance = shots scattered all over (inconsistent, sensitive). Ideal = tight cluster in the bullseye.",
+                  "insight": "Total Error = Bias\u00b2 + Variance + Irreducible Noise. <span>You cannot eliminate all three simultaneously.</span>"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Phase 6: Advanced",
+          "color": "#E63946",
+          "topics": [
+            {
+              "id": "cnn",
+              "title": "CNNs",
+              "breadcrumb": "CNNs",
+              "pageTitle": "Convolutional Neural Networks",
+              "pageSubtitle": "Specialized neural networks designed to process grid-like data \u2014 images, audio, video.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "CNNs \u2014 How Computers See",
+                  "sub": "Convolution layers detect local patterns",
+                  "difficulty": "hard",
+                  "body": "CNNs use convolutional layers that slide small filters across the input to detect local features like edges, textures, and shapes. Early layers detect simple patterns; deeper layers combine them into complex objects.",
+                  "analogy": "Reading with a magnifying glass: you slide it across the page to read each word (local pattern). Your brain then combines words into sentences into meaning \u2014 just like CNN layers.",
+                  "insight": "Conv \u2192 ReLU \u2192 Pooling is the basic CNN block. <span>Pooling reduces spatial dimensions</span> while retaining the most important information."
+                }
+              ]
+            },
+            {
+              "id": "attention",
+              "title": "Attention Mechanism",
+              "breadcrumb": "Attention",
+              "pageTitle": "Attention Mechanism",
+              "pageSubtitle": "Let the model focus on relevant parts of the input \u2014 the foundation of Transformers.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "Attention & Transformers",
+                  "sub": "Query, Key, Value \u2014 the language of attention",
+                  "difficulty": "expert",
+                  "body": "Attention allows the model to weigh the importance of different input tokens when producing each output token. Self-attention lets each token attend to all other tokens, capturing long-range dependencies that RNNs struggle with.",
+                  "analogy": "Reading a sentence and deciding which words to focus on when translating a specific word. 'The bank by the river' \u2014 to translate 'bank', you attend more to 'river' than 'the'.",
+                  "formula": "Attention(Q,K,V) = softmax(QK\u1d40/\u221ad_k)V",
+                  "insight": "Attention is the core of <span>GPT, BERT, and all modern LLMs</span>. It replaced RNNs because it parallelizes perfectly."
+                }
+              ]
+            },
+            {
+              "id": "embeddings",
+              "title": "Embeddings",
+              "breadcrumb": "Embeddings",
+              "pageTitle": "Embeddings",
+              "pageSubtitle": "Map discrete objects \u2014 words, images, users \u2014 into continuous vector spaces.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "What are Embeddings?",
+                  "sub": "Dense vector representations of discrete objects",
+                  "difficulty": "hard",
+                  "body": "Embeddings convert high-dimensional sparse representations (like one-hot encoded words) into dense, low-dimensional vectors. Similar items cluster nearby in this vector space. The famous example: king - man + woman \u2248 queen.",
+                  "analogy": "GPS coordinates for concepts. Cities near each other geographically have similar coordinates. Similarly, semantically related words have similar embedding vectors.",
+                  "formula": "similarity(a, b) = (a \u00b7 b) / (||a|| \u00d7 ||b||)  \u2190 cosine similarity",
+                  "insight": "Word2Vec, GloVe, and transformer embeddings power <span>every NLP model</span> in production today."
+                }
+              ]
+            },
+            {
+              "id": "reinforcement",
+              "title": "Reinforcement Learning",
+              "breadcrumb": "Reinforcement Learning",
+              "pageTitle": "Reinforcement Learning",
+              "pageSubtitle": "An agent learns by interacting with an environment \u2014 reward signals guide learning.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "Reinforcement Learning",
+                  "sub": "Agent \u2192 Action \u2192 Environment \u2192 Reward \u2192 Repeat",
+                  "difficulty": "expert",
+                  "body": "In RL, an agent takes actions in an environment to maximize cumulative reward. Unlike supervised learning, there are no labeled examples \u2014 the agent discovers the optimal strategy through trial and error, guided by delayed reward signals.",
+                  "analogy": "Training a dog: it tries different behaviors (sit, bark, jump). You give treats (reward) for the right behavior. Over time, it learns which actions lead to rewards. AlphaGo and ChatGPT's RLHF work the same way.",
+                  "insight": "RLHF (RL from Human Feedback) is how <span>ChatGPT and Claude were fine-tuned</span> to be helpful and safe."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "physics",
+      "title": "Physics",
+      "icon": "PHY",
+      "file": "course.html?id=physics",
+      "comingSoon": false,
+      "phases": [
+        {
+          "label": "Phase 1: Mechanics",
+          "color": "#1D6FA4",
+          "topics": [
+            {
+              "id": "phy-intro",
+              "title": "Introduction",
+              "breadcrumb": "Introduction",
+              "pageTitle": "Physics Visual Map",
+              "pageSubtitle": "From Newton laws to quantum mechanics. Every concept with visuals.",
+              "cards": [
+                {
+                  "type": "standard",
+                  "title": "What is Physics?",
+                  "sub": "The science of matter, energy, space and time",
+                  "difficulty": "easy",
+                  "body": "Physics explains how the universe works at every scale \u2014 from subatomic particles to galaxies. It uses mathematics to model natural phenomena precisely.",
+                  "analogy": "If the universe is a machine, physics is its instruction manual. Every gear, lever, and spring follows rules that physicists have been discovering for centuries.",
+                  "insight": "This course covers <span>mechanics, waves, thermodynamics, and electromagnetism</span> \u2014 the four pillars of classical physics."
+                }
+              ]
+            },
+            {
+              "id": "phy-newtons-laws",
+              "title": "Newton's Laws",
+              "breadcrumb": "Newton's Laws",
+              "pageTitle": "Newton's Three Laws",
+              "pageSubtitle": "The foundation of classical mechanics \u2014 how objects move and interact.",
+              "cards": [
+                {
+                  "type": "barchart",
+                  "title": "Three Laws at a Glance",
+                  "sub": "Each law builds on the previous",
+                  "difficulty": "easy",
+                  "analogy": "1st Law: A sleeping cat stays asleep until disturbed. 2nd Law: Harder to push a heavy cat than a light one. 3rd Law: When cat scratches you, you scratch the cat back (equal force).",
+                  "bars": [
+                    {
+                      "name": "1st Law (Inertia)",
+                      "width": 100,
+                      "color": "var(--blue)",
+                      "label": "Objects resist change in motion",
+                      "meta": "F=0"
+                    },
+                    {
+                      "name": "2nd Law (F=ma)",
+                      "width": 100,
+                      "color": "var(--green)",
+                      "label": "Force = mass \u00d7 acceleration",
+                      "meta": "F=ma"
+                    },
+                    {
+                      "name": "3rd Law (Action)",
+                      "width": 100,
+                      "color": "var(--orange)",
+                      "label": "Every action has equal reaction",
+                      "meta": "F\u2081=-F\u2082"
+                    }
+                  ],
+                  "insight": "These three laws explain <span>everything from a falling apple to a rocket launch</span>."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
