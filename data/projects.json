@@ -1,0 +1,28 @@
+{
+  "projects": [
+    {
+      "title": "This Portfolio",
+      "description": "A Vite-powered personal site with a visual learn section, daily blog, and Claude AI tutor.",
+      "tags": ["Vite", "Vanilla JS", "Design"],
+      "date": "2026-04-01",
+      "link": "https://github.com/mishraxharshit/harshitxmishra.github.io",
+      "color": "#d4a574"
+    },
+    {
+      "title": "Distributed Systems Notes",
+      "description": "Wiki-style documentation of distributed systems concepts — consensus, clocks, CAP theorem.",
+      "tags": ["Engineering", "Docs"],
+      "date": "2026-03-01",
+      "link": "https://github.com/mishraxharshit/harshitxmishra.github.io/wiki",
+      "color": "#1D6FA4"
+    },
+    {
+      "title": "Wildlife Archive",
+      "description": "A photographic record of species documented across France and India. Flamingos, coypus, raptors.",
+      "tags": ["Photography", "Nature"],
+      "date": "2026-02-01",
+      "link": "#captures",
+      "color": "#2A9D5C"
+    }
+  ]
+}

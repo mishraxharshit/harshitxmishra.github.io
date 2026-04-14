@@ -1,0 +1,47 @@
+[
+  {
+    "id": "belong",
+    "title": "Belong",
+    "date": "2026-02-14",
+    "tags": ["reflection", "life"],
+    "excerpt": "What does it mean to belong somewhere? France taught me something about that.",
+    "readTime": "3 min",
+    "body": "## Belong\n\nWhat does it mean to belong somewhere?\n\nI've been in France for a while now. The language is not mine, the culture is not mine, the food habits are different. But slowly, something changes.\n\nYou start finding your corner. Your café. Your route to work. Your favorite boulangerie that opens at 7:15 (not 7, not 7:30 — 7:15 exactly, and the owner knows if you're a regular).\n\nBelonging is not about being from somewhere. It's about choosing to stay long enough to leave marks, however small.\n\n> \"Wherever you are is called Here, and you must treat it as a powerful stranger.\" — David Wagoner\n\nI think about this a lot with code too. You belong to a codebase not when you wrote it, but when you can navigate it in the dark. When you know which part will break first when you pull a thread.\n\nBelong to what you put time into. The rest is just geography."
+  },
+  {
+    "id": "notes-on-distributed",
+    "title": "Notes on Distributed Systems — What I Keep Forgetting",
+    "date": "2026-03-01",
+    "tags": ["engineering", "distributed-systems"],
+    "excerpt": "CAP theorem, consensus, clocks — the concepts I have to re-learn every six months.",
+    "readTime": "5 min",
+    "body": "## Notes on Distributed Systems\n\nEvery few months I read a paper or debug a production issue and realize I've quietly forgotten something fundamental. These are my running notes to my future self.\n\n### Clocks are liars\n\nThe biggest mental shift in distributed thinking: physical time is unreliable. Two machines' clocks will drift. NTP helps but doesn't solve it. Logical clocks (Lamport, vector clocks) are the real answer for ordering events.\n\n```\n// Lamport timestamp rule:\n// on send: ts = ts + 1\n// on receive: ts = max(local_ts, received_ts) + 1\n```\n\n### CAP is a simplification\n\nYou can't have Consistency, Availability, and Partition Tolerance simultaneously — but this framing is too binary. Real systems tune between consistency levels (strong, eventual, causal) and availability levels depending on what the use case demands.\n\nCRDTs let you get eventual consistency *with* mergeability. That's the more interesting space.\n\n### Consensus is expensive\n\nRaft, Paxos — these are beautiful but costly. The rule of thumb I keep re-learning: don't use consensus when you can use a log.\n\nA log is totally ordered. Append is cheap. That's why Kafka works.\n\n### The thing I always forget\n\nNetworks partition. Disks lie. Memory gets corrupted. Processes crash mid-write. The failure modes are always weirder than you expect. **Design for failure first.**"
+  },
+  {
+    "id": "on-learning-physics",
+    "title": "On Teaching Yourself Physics at 25",
+    "date": "2026-03-15",
+    "tags": ["learning", "physics"],
+    "excerpt": "Why I started going back to first principles — Newton before neural nets.",
+    "readTime": "4 min",
+    "body": "## On Teaching Yourself Physics at 25\n\nI work in ML. Most of my day is probability distributions, gradient flows, loss curves. But a year ago I started re-learning classical physics from scratch. People find this strange.\n\nHere's why I think it matters.\n\n### The unreasonable clarity of Newton's laws\n\nF = ma. Three symbols. And from it you can derive projectile motion, orbital mechanics, why a car takes longer to stop on ice. The elegance is almost offensive — how much explanatory power sits in such small notation.\n\nML models don't look like this. A transformer has billions of parameters and we can't explain most of what it does. Physics gave me an appreciation for parsimony.\n\n### Intuition before formalism\n\nI started with Feynman's lectures — not because they're mathematically complete, but because Feynman never lets you go numb. He makes you feel like you're discovering it, not receiving it.\n\nIf you're going to learn anything, find the source that treats you like you have a brain and makes you curious.\n\n### The surprising connection\n\nGradient descent is, in a weird way, just energy minimization. A ball rolling into the lowest point of a valley. The physics metaphors in ML aren't accidents — optimization *is* mechanics in disguise.\n\nSo yes, I re-learn Newton. It makes the neural net stuff feel less like magic and more like applied physics. Which, in a real sense, it is."
+  },
+  {
+    "id": "wildlife-notes-april",
+    "title": "Wildlife Notes — April in the Camargue",
+    "date": "2026-04-01",
+    "tags": ["wildlife", "photography"],
+    "excerpt": "Flamingos, coypus, and the particular silence of a wetland at dawn.",
+    "readTime": "3 min",
+    "body": "## Wildlife Notes — April in the Camargue\n\nI drove down to the Camargue for a weekend. Southern France, where the Rhône delta becomes wetlands, salt flats, and horse country.\n\n### What I saw\n\n**Flamingos.** Hundreds of them. Pink against grey morning water. They're ungainly up close — strange S-curves of neck, legs too long for the body — but in formation, moving across shallow water, they're geometry. Patterns repeating.\n\n**Coypus.** Semi-aquatic rodents, large as small dogs, completely unfazed by humans. They eat reeds at the water's edge and ignore everything else. Efficient animals.\n\n**The birds I couldn't identify.** This is the humbling part. I know maybe 40 species reliably. There are hundreds here. A gray-brown wader I photographed for five minutes — I still don't know what it was.\n\n### The silence\n\nWetlands at dawn have a specific quality of silence. Not absence of sound — there's wind, water, birds — but absence of *human* sound. The frequency of background noise shifts and your brain notices.\n\nI find it clarifying. Problems I've been carrying feel smaller. Architecture decisions, writing blocks, minor anxieties — all of them seem like what they are: small.\n\n### Why I document it\n\nI'm not a trained naturalist. I just look carefully and write down what I see. That habit — careful observation, faithful notation — feels related to what I do with code and research. Same practice, different domain."
+  },
+  {
+    "id": "vite-github-pages",
+    "title": "Vite + GitHub Pages: The Cleanest Setup",
+    "date": "2026-04-10",
+    "tags": ["engineering", "webdev", "tutorial"],
+    "excerpt": "How I migrated my site from raw HTML to Vite — deploy in 2 commands.",
+    "readTime": "6 min",
+    "body": "## Vite + GitHub Pages: The Cleanest Setup\n\nI recently migrated my personal site from raw HTML/CSS/JS files to Vite. Here's the whole setup — it's simpler than you think.\n\n### Why Vite\n\nVite gives you:\n- **HMR** (Hot Module Replacement) — save file, see change instantly\n- **Asset optimization** — images, CSS, JS all bundled and minified\n- **ES modules natively** — no webpack config hell\n- **Fast** — genuinely fast, even for large projects\n\nFor a portfolio, it's probably overkill. But once you have it, you won't go back.\n\n### The setup\n\n```bash\nnpm create vite@latest my-portfolio -- --template vanilla\ncd my-portfolio\nnpm install\nnpm install -D gh-pages\n```\n\nAdd to `package.json`:\n```json\n{\n  \"scripts\": {\n    \"deploy\": \"npm run build && gh-pages -d dist\"\n  }\n}\n```\n\nAdd to `vite.config.js`:\n```js\nexport default {\n  base: '/'  // or '/repo-name/' if not root domain\n}\n```\n\n### Deploy\n\n```bash\nnpm run deploy\n```\n\nThat's it. GitHub will pick up the `gh-pages` branch. \n\n### Multi-page\n\nFor multiple HTML pages (index, blog, learn), configure `rollupOptions`:\n\n```js\nrollupOptions: {\n  input: {\n    main: 'index.html',\n    blog: 'blog.html',\n    learn: 'learn.html'\n  }\n}\n```\n\nEach page gets its own JS bundle. Clean.\n\n### The only gotcha\n\nVite serves from `localhost:5173` in dev but your paths need to work in both dev and production. Use `/data/posts.json` (absolute from root) rather than `./data/posts.json` (relative). Done."
+  }
+]

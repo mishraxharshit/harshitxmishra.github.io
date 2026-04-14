@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Harshit Mishra — Visual learning maps for ML, Physics, and more." />
+  <title>Learn — Harshit Mishra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/harshitxmishra.github.io/assets/learn-CTkVeVBB.js"></script>
+  <link rel="modulepreload" crossorigin href="/harshitxmishra.github.io/assets/nav-D-Z93WdM.js">
+  <link rel="stylesheet" crossorigin href="/harshitxmishra.github.io/assets/nav-CIstCUCW.css">
+  <link rel="stylesheet" crossorigin href="/harshitxmishra.github.io/assets/learn-D8hnSjyb.css">
+</head>
+<body>
+<div class="grain-overlay"></div>
+
+<nav class="main-nav">
+  <div class="nav-left"><a href="./index.html" class="logo">𐂂</a></div>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-right" id="nav-menu">
+    <button class="nav-close" id="nav-close">✕</button>
+    <a href="./index.html" class="nav-link">Home</a>
+    <a href="./blog.html" class="nav-link">Blog</a>
+    <a href="./learn.html" class="nav-link">Learn</a>
+    <a href="https://github.com/mishraxharshit/harshitxmishra.github.io/wiki" target="_blank" class="nav-link wiki-link">Wiki ↗</a>
+  </div>
+  <div class="nav-overlay" id="nav-overlay"></div>
+</nav>
+
+<div class="learn-layout">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="learn-sidebar" id="learn-sidebar">
+    <div class="sidebar-header">
+      <span class="section-pill">Knowledge Base</span>
+      <h2 class="sidebar-title">Learn</h2>
+    </div>
+    <nav class="sidebar-nav" id="sidebar-nav">
+      <!-- populated by JS -->
+      <div class="sidebar-loading mono muted">Loading courses...</div>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main class="learn-main" id="learn-main">
+
+    <!-- Landing state -->
+    <div class="learn-landing" id="learn-landing">
+      <div class="landing-inner">
+        <div class="landing-eyebrow mono muted">Visual Knowledge Maps</div>
+        <h1 class="landing-title">Learn<br><em>Visually.</em></h1>
+        <p class="landing-desc">
+          Pick a course from the sidebar. Every concept comes with analogies,
+          visual breakdowns, and an AI tutor you can ask anything.
+        </p>
+        <div class="landing-courses" id="landing-courses">
+          <!-- course cards loaded by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Topic content state (hidden until topic selected) -->
+    <div class="learn-content" id="learn-content">
+      <div class="content-breadcrumb mono muted" id="content-breadcrumb"></div>
+      <div class="content-header">
+        <h1 class="content-title" id="content-title"></h1>
+        <p class="content-subtitle" id="content-subtitle"></p>
+      </div>
+      <div class="cards-grid" id="cards-grid">
+        <!-- cards rendered by JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── AI TUTOR PANEL ── -->
+  <aside class="ai-panel" id="ai-panel">
+    <div class="ai-panel-header">
+      <div class="ai-panel-title">
+        <span class="pulse-dot"></span>
+        <span class="mono ai-panel-label">Claude AI Tutor</span>
+      </div>
+      <div class="ai-panel-model mono muted">claude-sonnet-4-20250514</div>
+    </div>
+
+    <!-- No topic selected state -->
+    <div class="ai-idle" id="ai-idle">
+      <div class="ai-idle-icon">⌘</div>
+      <p class="mono muted" style="font-size:0.8rem; text-align:center; line-height:1.6;">
+        Select a topic to activate<br>the AI tutor for that concept.
+      </p>
+    </div>
+
+    <!-- Active AI chat -->
+    <div class="ai-active" id="ai-active" style="display:none;">
+      <div class="ai-context-pill" id="ai-context-pill">
+        <span class="mono" style="font-size:0.7rem;">Context: —</span>
+      </div>
+
+      <div class="ai-messages" id="ai-messages">
+        <!-- messages appear here -->
+      </div>
+
+      <div class="ai-suggestions" id="ai-suggestions">
+        <!-- quick question chips -->
+      </div>
+
+      <div class="ai-input-area">
+        <textarea
+          id="ai-input"
+          class="ai-input mono"
+          placeholder="Ask about this concept..."
+          rows="2"
+        ></textarea>
+        <button class="ai-send-btn" id="ai-send-btn">
+          <span>Ask</span>
+          <span class="mono" style="font-size:0.7rem;">↵</span>
+        </button>
+      </div>
+
+      <div class="ai-disclaimer mono muted" style="font-size:0.65rem; margin-top:0.5rem; line-height:1.4;">
+        Powered by Claude. Add your Anthropic API key in the input below to enable.
+      </div>
+      <input
+        id="api-key-input"
+        type="password"
+        class="api-key-field mono"
+        placeholder="sk-ant-... (stored locally only)"
+      />
+    </div>
+  </aside>
+
+</div>
+
+<!-- Mobile AI toggle button -->
+<button class="ai-mobile-fab" id="ai-mobile-fab" style="display:none;" aria-label="Open AI Tutor">
+  <span>✦ Ask AI</span>
+</button>
+
+</body>
+</html>
