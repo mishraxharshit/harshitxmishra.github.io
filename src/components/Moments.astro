@@ -1,0 +1,22 @@
+---
+import { u } from '@/lib/url';
+const { items, uid = 'a' } = Astro.props, id = `lb-${uid}`;
+const src = (p: string) => (p.startsWith('/') ? u(p) : p);
+const cap = (m: any) => [m.data.title, m.data.location, m.data.caption].filter(Boolean).join(' · ');
+---
+<div class="moments" data-lb={id}>
+  {items.map((m: any) => (
+    <figure class="shot">
+      <button type="button" data-full={src(m.data.image)} data-cap={cap(m)} data-t={m.data.title}><img src={src(m.data.image)} alt={m.data.title} loading="lazy" decoding="async" /></button>
+      <figcaption class="mono dim">{m.data.location || m.data.title}</figcaption>
+    </figure>
+  ))}
+</div>
+<dialog id={id} class="lbx"><img alt="" /><p class="mono"></p></dialog>
+<script is:inline define:vars={{ id }}>
+(() => {
+  const d = document.getElementById(id), i = d.querySelector('img'), c = d.querySelector('p');
+  document.querySelectorAll('[data-lb="' + id + '"] .shot button').forEach(b => b.onclick = () => { i.src = b.dataset.full; i.alt = b.dataset.t; c.textContent = b.dataset.cap; d.showModal(); });
+  d.onclick = () => d.close();
+})();
+</script>

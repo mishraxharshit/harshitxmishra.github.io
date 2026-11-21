@@ -1,0 +1,433 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Studio</title>
+<style>
+:root{--bg:#f5f6f8;--sf:#fff;--bd:#e2e5ea;--tx:#161a21;--mu:#6b7280;--ac:#4f46e5;--acb:#eef0ff;--hv:#f3f4f7;--dn:#dc2626;--ok:#166534;--okb:#dcfce7;--wn:#92400e;--wnb:#fef3c7;--mono:ui-monospace,Menlo,Consolas,monospace;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1115;--sf:#171a21;--bd:#2a2f3a;--tx:#e8eaf0;--mu:#9aa3b2;--ac:#818cf8;--acb:#232748;--hv:#1e222b;--dn:#f87171;--ok:#86efac;--okb:#12301f;--wn:#fcd34d;--wnb:#3a2c0b;color-scheme:dark}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif}[hidden]{display:none!important}
+h1{font-size:22px;margin:0;letter-spacing:-.01em}h2{font-size:15px;margin:0 0 14px}.mu{color:var(--mu)}.hint{font-size:12px;color:var(--mu);margin:6px 0 0}a{color:inherit;text-decoration:none}
+input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);font:inherit}input:focus,select:focus,textarea:focus{outline:2px solid var(--ac);outline-offset:-1px}
+input[type=checkbox]{width:auto}input[type=color]{padding:2px;height:36px}input:read-only{background:var(--hv);color:var(--mu)}
+label{display:block;font-size:12px;font-weight:600;color:var(--mu)}label>input,label>select{margin-top:5px;font-weight:400}label.chk{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:500;color:var(--tx);margin:0 0 10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);font:inherit;font-weight:500;cursor:pointer}.btn:hover{background:var(--hv)}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}.btn.pri:hover{filter:brightness(1.08)}.btn.dng{color:var(--dn)}.btn.sm{padding:5px 10px;font-size:12px}.btn.block{width:100%;margin-top:8px}.btn:disabled{opacity:.6}
+.app{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;background:var(--sf);border-right:1px solid var(--bd);padding:18px 12px;display:flex;flex-direction:column}
+.brand{display:flex;gap:10px;align-items:center;padding:0 8px 14px}.logo{width:32px;height:32px;border-radius:9px;background:var(--ac);color:#fff;display:grid;place-items:center;font-weight:700}.brand b{display:block;line-height:1.2}.brand small{color:var(--mu);font-size:11px;word-break:break-all}
+.grp{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin:18px 10px 6px}
+.nav a{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:8px;cursor:pointer;color:var(--mu);font-weight:500}.nav a:hover{background:var(--hv);color:var(--tx)}.nav a.on{background:var(--acb);color:var(--ac);font-weight:600}
+.cnt{font-size:11px;background:var(--hv);color:var(--mu);border-radius:999px;padding:1px 8px}.sidefoot{margin-top:auto;padding:14px 10px 0;display:grid;gap:8px;font-size:13px;color:var(--mu)}.sidefoot a:hover{color:var(--ac)}
+.main{padding:0 28px 80px;max-width:1240px;width:100%}.top{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0 16px;border-bottom:1px solid var(--bd);margin-bottom:22px}.top p{margin:2px 0 0;color:var(--mu)}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:18px;margin-bottom:18px}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:22px}.stat{display:flex;flex-direction:column;gap:2px;background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:16px;cursor:pointer}.stat:hover{border-color:var(--ac)}.stat .n{font-size:28px;font-weight:700;line-height:1.1}.stat small{color:var(--mu)}
+.quick{display:flex;gap:10px;flex-wrap:wrap}.steps{margin:0;padding-left:18px;color:var(--mu)}.steps li{margin:4px 0}
+.bar{display:flex;gap:12px;align-items:center;margin-bottom:14px}.bar input{max-width:320px}
+table{width:100%;border-collapse:collapse}th{text-align:left;font-size:12px;color:var(--mu);font-weight:600;padding:10px 12px;border-bottom:1px solid var(--bd)}td{padding:12px;border-bottom:1px solid var(--bd);vertical-align:middle}tr:last-child td{border-bottom:0}tr.row{cursor:pointer}tr.row:hover{background:var(--hv)}td.ttl{font-weight:600}
+.th{width:56px;height:40px;object-fit:cover;border-radius:6px;background:var(--hv);display:block}.empty{text-align:center;padding:48px 16px;color:var(--mu)}
+.chip{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;background:var(--hv);color:var(--mu);margin-right:4px}.chip.ok{background:var(--okb);color:var(--ok)}.chip.warn{background:var(--wnb);color:var(--wn)}
+.edit{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:20px;align-items:start}.edit aside{position:sticky;top:96px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.full{grid-column:1/-1}
+.tabs{display:flex;gap:4px;margin-bottom:10px;border-bottom:1px solid var(--bd)}.tab{padding:8px 14px;border:0;background:none;color:var(--mu);font:inherit;font-weight:600;cursor:pointer;border-bottom:2px solid transparent}.tab.on{color:var(--ac);border-color:var(--ac)}
+.tools{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.sep{width:1px;background:var(--bd);margin:0 4px}
+textarea{height:52vh;resize:vertical;font:14px/1.65 var(--mono)}textarea.over{outline:2px dashed var(--ac)}
+#pv{border:1px solid var(--bd);border-radius:8px;padding:14px 18px;min-height:52vh;max-height:70vh;overflow:auto;line-height:1.7}#pv img,#pv video{max-width:100%;border-radius:6px}#pv iframe{width:100%;aspect-ratio:16/9;border:0}#pv pre{background:var(--hv);padding:10px;overflow:auto}
+.drop{border:2px dashed var(--bd);border-radius:12px;padding:34px;text-align:center;color:var(--mu);cursor:pointer}.drop:hover,.drop.over{border-color:var(--ac);color:var(--ac);background:var(--acb)}#mthumb{max-width:100%;border-radius:8px}
+.setup{max-width:480px;margin:9vh auto;padding:0 18px}.setup ol{color:var(--mu);padding-left:18px}.setup li{margin:6px 0}.setup label{margin-top:14px}.err{color:var(--dn);margin-top:10px}
+.toast{position:fixed;right:20px;bottom:20px;max-width:380px;padding:12px 16px;border-radius:10px;background:#1f2937;color:#fff;box-shadow:0 8px 24px #0004;opacity:0;transform:translateY(10px);transition:.2s;pointer-events:none;z-index:50}.toast.show{opacity:1;transform:none}.toast.ok{background:#166534}.toast.err{background:#b91c1c}
+dialog{border:1px solid var(--bd);border-radius:14px;background:var(--sf);color:var(--tx);padding:16px;width:min(1100px,96vw)}dialog::backdrop{background:#0008}
+#pc{width:100%;background:#fff;border:1px solid var(--bd);border-radius:8px;touch-action:none;cursor:crosshair;display:block}.sw{width:26px;height:26px;border-radius:50%;padding:0;border:2px solid #fff;box-shadow:0 0 0 1px var(--bd);cursor:pointer}.prow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+@media(max-width:900px){.app{grid-template-columns:1fr}.side{position:static;height:auto}.edit{grid-template-columns:1fr}.edit aside{position:static}.main{padding:0 16px 60px}.g2{grid-template-columns:1fr}}
+</style></head><body>
+
+<div id="setup" class="setup">
+  <h1>Studio</h1><p class="mu">Connect your GitHub repository to manage your site.</p>
+  <div class="card" style="margin-top:20px">
+    <h2>One-time setup</h2>
+    <ol><li>GitHub → Settings → Developer settings → Personal access tokens → <b>Fine-grained tokens</b> → Generate new token.</li>
+    <li>Repository access: <b>Only select repositories</b>, then choose your site repository.</li>
+    <li>Permissions → Repository permissions → <b>Contents: Read and write</b>. Generate the token.</li></ol>
+    <label>Repository (owner/name)<input id="repo"></label>
+    <label>Access token<input id="tok" type="password" placeholder="github_pat_…" autocomplete="off"></label>
+    <button id="cbtn" class="btn pri block" onclick="connect()">Connect</button><div id="err" class="err"></div>
+    <p class="hint">Your token is stored only in this browser. Nothing is sent anywhere except GitHub.</p>
+  </div>
+</div>
+
+<div id="app" class="app" hidden>
+  <aside class="side">
+    <div class="brand"><div class="logo">S</div><div><b>Studio</b><small id="repoName"></small></div></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sidefoot"><a id="live" target="_blank" rel="noopener">View live site ↗</a><a href="#" onclick="logout();return false">Disconnect</a></div>
+  </aside>
+  <main class="main">
+    <header class="top"><div><h1 id="pt">Dashboard</h1><p id="ps"></p></div><div id="pa"></div></header>
+
+    <section id="v-home">
+      <div class="stats" id="stats"></div>
+      <div class="card"><h2>Quick actions</h2><div class="quick" id="quick"></div></div>
+      <div class="card"><h2>How publishing works</h2><ol class="steps"><li>Create or edit an entry, then press <b>Publish</b>. The change is saved to GitHub as a commit.</li><li>GitHub Actions rebuilds your site automatically. This takes 1–2 minutes.</li><li>Entries marked <b>Draft</b> stay hidden from the site, but remain in your repository.</li></ol></div>
+    </section>
+
+    <section id="v-list" hidden>
+      <div class="bar"><input id="lq" placeholder="Search…" oninput="renderList()"><span id="lc" class="mu"></span></div>
+      <div class="card" style="padding:6px 8px" id="lt"></div>
+    </section>
+
+    <section id="v-edit" hidden>
+      <input type="hidden" id="type">
+      <div class="edit">
+        <div>
+          <div class="card"><h2>Basics</h2><div class="g2">
+            <div class="full"><label>Title<input id="title"></label></div>
+            <div data-t="post note learn source"><label>URL slug<input id="slug"></label><p class="hint" id="slughint"></p></div>
+            <div data-t="post note moment source log"><label id="datelbl"><span>Date</span><input id="date" type="date"></label></div>
+            <div data-t="post"><label>Category<input id="cat" list="cats"><datalist id="cats"><option>Learning</option><option>Project</option><option>Reading</option><option>Wildlife</option><option>Life</option></datalist></label></div>
+            <div data-t="post note source"><label>Tags (comma separated)<input id="tags"></label></div>
+            <div data-t="learn"><label>Course<input id="course" list="courses" placeholder="Machine Learning"><datalist id="courses"></datalist></label></div>
+            <div data-t="learn"><label>Phase<input id="phase" list="phases" placeholder="Foundations"><datalist id="phases"></datalist></label></div>
+            <div data-t="learn"><label>Phase color<input id="color" type="color" value="#1D6FA4"></label></div>
+            <div data-t="learn"><label>Square number<input id="order" type="number" min="1" value="1"></label></div>
+            <div data-t="source"><label>Kind<select id="stype"><option value="paper">Paper</option><option value="book">Book</option><option value="journal">Journal article</option><option value="website">Website</option><option value="video">Video / talk</option></select></label></div>
+            <div data-t="source"><label>Status<select id="status"><option value="to-read">To read</option><option value="reading">Reading</option><option value="done">Done</option></select></label></div>
+            <div data-t="source" class="full"><label>Authors (separate with ;)<input id="author" placeholder="Ashish Vaswani; Noam Shazeer"></label></div>
+            <div data-t="source"><label>Year<input id="year" type="number" placeholder="2017"></label></div>
+            <div data-t="source"><label>Journal / venue<input id="venue" placeholder="NeurIPS"></label></div>
+            <div data-t="source"><label>DOI<input id="doi" placeholder="10.xxxx/…"></label></div>
+            <div data-t="source"><label>Source link (arXiv, publisher…)<input id="blink" placeholder="https://…"></label></div>
+            <div data-t="source" class="full"><label>Material<select id="lic"><option value="open">Open access or my own work</option><option value="copyrighted">Copyrighted (my notes and short quotes only)</option></select></label><p class="hint">PDFs are never uploaded. Link to the legal source instead.</p></div>
+            <div data-t="log"><label>Source<select id="bk"></select></label></div>
+            <div data-t="log"><label>Pages / chapter<input id="pg" placeholder="12-24"></label></div>
+            <div data-t="moment"><label>Location<input id="loc" placeholder="Camargue, France"></label></div>
+            <div class="full" data-t="post note learn moment source"><label id="sumlbl"><span>Summary</span><input id="sum"></label></div>
+          </div></div>
+
+          <div class="card" data-t="moment"><h2>Photos</h2>
+            <img id="mthumb" alt="" hidden>
+            <div id="drop" class="drop" onclick="mf.click()">Drag photos here or click to upload<p class="hint">Each photo becomes its own moment and is published immediately. The title defaults to the file name; location and caption above are applied to every photo in the batch.</p></div>
+            <input id="mf" type="file" multiple accept="image/*" hidden onchange="addMoments([...mf.files]);mf.value=''">
+          </div>
+
+          <div class="card" data-t="post note learn source log"><h2>Content</h2>
+            <div class="tabs"><button id="tw" class="tab on" onclick="setTab('write')">Write</button><button id="tp" class="tab" onclick="setTab('preview')">Preview</button></div>
+            <div class="tools" id="tools">
+              <button class="btn sm" onclick="f.click()">Image / video</button><button class="btn sm" onclick="yt()">YouTube</button><button class="btn sm" onclick="openPen()">Pen note</button>
+              <button class="btn sm" onclick="ins('\n$$\nE = mc^2\n$$\n')">Math</button><button class="btn sm" onclick="ins('\n> [!TIP]\n> Write your tip here.\n\n')">Callout</button>
+              <button class="btn sm" data-t="source log" onclick="ins('\n> [!HIGHLIGHT]\n> Quote here — p. \n\n')">Highlight</button><button class="btn sm" data-t="source log" onclick="ins('\n> [!QUESTION]\n> Your question…\n\n')">Question</button>
+              <button class="btn sm" data-t="learn" onclick="card()">Add card</button><span class="sep"></span>
+              <button class="btn sm" onclick="ins('\n## ','Heading')">H2</button><button class="btn sm" onclick="wrap('**')"><b>B</b></button><button class="btn sm" onclick="ins('\n```\n','code\n```\n')">Code</button>
+            </div>
+            <input id="f" type="file" multiple accept="image/*,video/*" hidden onchange="up([...f.files]);f.value=''">
+            <textarea id="body" placeholder="Write in Markdown. Drag and drop or paste images and videos."></textarea><div id="pv" hidden></div>
+            <p class="hint">Markdown and LaTeX are supported. Images over 1920 px are resized automatically. Videos up to 25 MB; for longer ones use YouTube.</p>
+          </div>
+        </div>
+        <aside>
+          <div class="card"><h2>Publish</h2>
+            <p class="mu" id="pstate" style="margin:0 0 14px">New entry</p>
+            <label class="chk"><input type="checkbox" id="draft"> Keep as draft (hidden from site)</label>
+            <label class="chk" data-t="post"><input type="checkbox" id="pinned"> Pin to the top</label>
+            <button class="btn pri block" onclick="save()">Publish</button>
+            <a id="viewlive" class="btn block" target="_blank" rel="noopener" hidden>View on site ↗</a>
+            <button id="del" class="btn dng block" hidden onclick="remove()">Delete…</button>
+            <p class="hint">Shortcut: Ctrl+S</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="v-social" hidden>
+      <div class="card" style="max-width:640px"><div class="g2">
+        <label>GitHub<input id="s_github" placeholder="https://github.com/…"></label><label>LinkedIn<input id="s_linkedin" placeholder="https://linkedin.com/in/…"></label>
+        <label>X (Twitter)<input id="s_x" placeholder="https://x.com/…"></label><label>Instagram<input id="s_instagram" placeholder="https://instagram.com/…"></label>
+        <label>YouTube<input id="s_youtube" placeholder="https://youtube.com/@…"></label><label>Facebook page<input id="s_facebook" placeholder="https://facebook.com/…"></label>
+      </div><p class="hint">Leave a field empty to hide that link from the site.</p><button class="btn pri" style="margin-top:12px" onclick="saveSocial()">Publish links</button></div>
+    </section>
+  </main>
+</div>
+<div id="toast" class="toast"></div>
+
+<dialog id="pen">
+  <div class="prow"><b>Pen notebook</b><span class="mu">Paste a screenshot (Win+Shift+S, then Ctrl+V) or add an image, then write on top with your pen. The pen's eraser end erases.</span></div>
+  <div class="prow">
+    <button class="sw" style="background:#1b1b1b" aria-label="Black pen" onclick="penTool('#1b1b1b','pen')"></button><button class="sw" style="background:#1f4fd8" aria-label="Blue pen" onclick="penTool('#1f4fd8','pen')"></button><button class="sw" style="background:#d62839" aria-label="Red pen" onclick="penTool('#d62839','pen')"></button><button class="sw" style="background:#f5d90a" aria-label="Highlighter" onclick="penTool('#f5d90a','hl')"></button>
+    <button class="btn sm" onclick="penTool(PC.color,'text')">Text</button><button class="btn sm" id="peraser" onclick="penEraser()">Eraser</button>
+    <label style="display:flex;gap:6px;align-items:center">Thickness <input type="range" min="1" max="8" value="3" style="width:90px;padding:0" oninput="PC.w=+this.value"></label>
+    <button class="btn sm" onclick="penUndo()">Undo</button><button class="btn sm" onclick="penClear()">Clear page</button><button class="btn sm" onclick="pbg.click()">Add screenshot / image</button><input id="pbg" type="file" accept="image/*" hidden onchange="penBg(this.files[0]);this.value=''">
+  </div>
+  <div class="prow"><button class="btn sm" onclick="penGo(-1)">◀</button><span id="pcount">Page 1/1</span><button class="btn sm" onclick="penGo(1)">▶</button><button class="btn sm" onclick="penAdd()">+ Page</button><span style="margin-left:auto"></span><button class="btn pri sm" onclick="penInsert()">Insert all pages into note</button><button class="btn sm" onclick="$('pen').close()">Close</button></div>
+  <canvas id="pc"></canvas>
+</dialog>
+
+<script>
+const $ = i => document.getElementById(i), LS = localStorage, q = JSON.stringify, blobs = {};
+let repo = LS.gh_repo || '', tok = LS.gh_tok || '', branch = 'main', loaded = null, curImage = '', VIEW = 'home', SEC = 'post', srcs = [], idx = [], LOADING = false;
+const T = {
+  post: { n: 'Posts', s: 'Post', dir: 'posts', d: 'Long-form writing shown on the Writing page.' },
+  note: { n: 'Notes', s: 'Note', dir: 'notes', d: 'Short thoughts and quick ideas.' },
+  learn: { n: 'Learn topics', s: 'Learn topic', dir: 'learn', d: 'Topics in your visual learning atlas.' },
+  moment: { n: 'Moments', s: 'Moment', dir: 'moments', d: 'Wildlife photography gallery.' },
+  source: { n: 'Sources', s: 'Source', dir: 'sources', d: 'Papers, books, journals, websites and videos you work with.' },
+  log: { n: 'Research notes', s: 'Research note', dir: 'logs', d: 'Notes, highlights, questions and pen pages for each source.' },
+};
+const DB = { post: [], note: [], learn: [], moment: [], source: [], log: [] };
+const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const today = () => new Date().toISOString().slice(0, 10), fd = d => d ? String(d).slice(0, 10) : '';
+let tt; function st(m) { const t = $('toast'); t.textContent = m; t.className = 'toast show ' + (/^Error/.test(m) ? 'err' : /✓/.test(m) ? 'ok' : ''); clearTimeout(tt); tt = setTimeout(() => t.className = 'toast', /^Error/.test(m) ? 9000 : 4500); }
+const gh = async (p, o = {}) => {
+  const r = await fetch('https://api.github.com/repos/' + repo + p, { ...o, headers: { Authorization: 'Bearer ' + tok, Accept: 'application/vnd.github+json' } });
+  const j = await r.json().catch(() => ({})); if (!r.ok) { const e = new Error(j.message || r.status); e.status = r.status; throw e; } return j;
+};
+const get = p => gh(`/contents/${p}?ref=${branch}`).catch(e => { if (e.status === 404) return null; throw e; });
+const enc = s => { let x = ''; new TextEncoder().encode(s).forEach(c => x += String.fromCharCode(c)); return btoa(x); };
+const dec = c => new TextDecoder().decode(Uint8Array.from(atob(c.replace(/\n/g, '')), ch => ch.charCodeAt(0)));
+async function put(path, content, msg) { const cur = await get(path); return gh('/contents/' + path, { method: 'PUT', body: JSON.stringify({ message: msg, content, branch, ...(cur ? { sha: cur.sha } : {}) }) }); }
+async function del(path, msg) { const cur = await get(path); if (cur) await gh('/contents/' + path, { method: 'DELETE', body: JSON.stringify({ message: msg, sha: cur.sha, branch }) }); }
+const parseFm = text => { const m = text.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/); if (!m) return { d: {}, body: text }; const d = {};
+  m[1].split('\n').forEach(l => { const i = l.indexOf(':'); if (i > 0) { let v = l.slice(i + 1).trim(); try { v = JSON.parse(v); } catch {} d[l.slice(0, i)] = v; } }); return { d, body: m[2].trim() }; };
+const siteBase = () => { const [o, n] = repo.split('/'); return `https://${o}.github.io` + (n && n.toLowerCase() === o.toLowerCase() + '.github.io' ? '' : '/' + n); };
+const liveUrl = (t, s) => { const b = siteBase(); return { post: `${b}/writing/${s}/`, note: `${b}/notes/${s}/`, learn: `${b}/learn/${s}/`, moment: `${b}/moments/`, source: `${b}/research/${s}/`, log: `${b}/research/${$('bk').value}/#s-${s}` }[t]; };
+
+/* ---------- connection ---------- */
+async function connect() {
+  repo = $('repo').value.trim(); tok = $('tok').value.trim(); $('err').textContent = ''; $('cbtn').disabled = true;
+  try { const r = await gh(''); if (!r.permissions || !r.permissions.push) throw new Error('This token needs "Contents: Read and write" permission on the repository.'); branch = r.default_branch; LS.gh_repo = repo; LS.gh_tok = tok; start(); }
+  catch (e) { $('err').textContent = e.message === 'Bad credentials' ? 'Invalid token. Please generate a new one.' : e.status === 404 ? 'Repository not found, or the token has no access to it. Check the repository name.' : e.message; }
+  $('cbtn').disabled = false;
+}
+function logout() { LS.removeItem('gh_tok'); location.reload(); }
+function start() { $('setup').hidden = true; $('app').hidden = false; $('repoName').textContent = repo; $('live').href = siteBase() + '/'; renderNav(); go('home'); refresh(); }
+
+/* ---------- data ---------- */
+async function refresh() {
+  LOADING = true; if (VIEW === 'list') renderList();
+  const ls = async dir => (await gh(`/contents/src/content/${dir}?ref=${branch}`).catch(() => []));
+  const rd = async f => { const x = await get(f.path); return parseFm(dec(x.content)); };
+  const real = s => !(s === 'example' || s.startsWith('example--') || s.startsWith('example/')); // hidden placeholder files
+  for (const t of ['post', 'note', 'moment', 'source', 'log']) {
+    const files = (await ls(T[t].dir)).filter(f => f.name.endsWith('.md') && real(f.name.slice(0, -3)));
+    DB[t] = await Promise.all(files.map(async f => ({ t, s: f.name.slice(0, -3), ...(await rd(f)) })));
+    DB[t].sort((a, b) => String(b.d.date || '').localeCompare(String(a.d.date || '')) || String(a.d.title).localeCompare(String(b.d.title)));
+  }
+  DB.learn = []; for (const dd of (await ls('learn')).filter(x => x.type === 'dir' && real(x.name + '/'))) {
+    const fs = (await gh(`/contents/${dd.path}?ref=${branch}`).catch(() => [])).filter(f => f.name.endsWith('.md'));
+    DB.learn.push(...await Promise.all(fs.map(async f => ({ t: 'learn', s: dd.name + '/' + f.name.slice(0, -3), ...(await rd(f)) }))));
+  }
+  DB.learn.sort((a, b) => String(a.d.course).localeCompare(String(b.d.course)) || a.d.order - b.d.order);
+  idx = DB.learn.map(e => e.d); srcs = DB.source.map(e => ({ s: e.s, title: e.d.title || e.s, lic: e.d.license || 'open' }));
+  $('bk').innerHTML = srcs.map(b => `<option value="${esc(b.s)}">${esc(b.title)}</option>`).join('');
+  $('courses').innerHTML = [...new Set(idx.map(d => d.course))].map(c => `<option>${esc(c)}</option>`).join('');
+  LOADING = false; renderNav(); if (VIEW === 'home') renderHome(); if (VIEW === 'list') renderList();
+}
+
+/* ---------- navigation ---------- */
+function head(title, sub, actions) { $('pt').textContent = title; $('ps').textContent = sub || ''; $('pa').innerHTML = actions || ''; document.title = title + ' · Studio'; }
+function renderNav() {
+  const g = [['', [['home', 'Dashboard']]], ['Content', ['post', 'note', 'learn', 'moment'].map(t => [t, T[t].n])], ['Research', ['source', 'log'].map(t => [t, T[t].n])], ['Site', [['social', 'Social links']]]];
+  $('nav').innerHTML = g.map(([n, items]) => (n ? `<div class="grp">${n}</div>` : '') + items.map(([k, l]) => `<a data-v="${k}" onclick="nav('${k}')"><span>${l}</span>${T[k] ? `<span class="cnt">${DB[k].length}</span>` : ''}</a>`).join('')).join('');
+  markNav();
+}
+function markNav() { const k = VIEW === 'home' ? 'home' : VIEW === 'social' ? 'social' : SEC; document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.v === k)); }
+function nav(k) { k === 'home' || k === 'social' ? go(k) : go('list', k); }
+function go(v, sec) {
+  if (sec && sec !== SEC) $('lq').value = ''; VIEW = v; if (sec) SEC = sec;
+  ['home', 'list', 'edit', 'social'].forEach(x => $('v-' + x).hidden = x !== v);
+  if (v === 'home') { head('Dashboard', 'Manage everything on your site from one place.'); renderHome(); }
+  else if (v === 'list') { head(T[SEC].n, T[SEC].d, `<button class="btn pri" onclick="neu('${SEC}')">+ New ${T[SEC].s.toLowerCase()}</button>`); renderList(); }
+  else if (v === 'social') { head('Social links', 'Shown in the Contact section of your site.'); loadSocial(); }
+  markNav(); window.scrollTo(0, 0);
+}
+function renderHome() {
+  const ts = ['post', 'note', 'learn', 'moment', 'source', 'log'];
+  $('stats').innerHTML = ts.map(t => { const n = DB[t].length, d = DB[t].filter(e => e.d.draft === true).length; return `<a class="stat" onclick="go('list','${t}')"><span class="n">${n}</span><span>${T[t].n}</span><small>${d ? d + (d > 1 ? ' drafts' : ' draft') : 'All published'}</small></a>`; }).join('');
+  $('quick').innerHTML = ts.map(t => `<button class="btn" onclick="neu('${t}')">+ New ${T[t].s.toLowerCase()}</button>`).join('');
+}
+const chip = (t, c = '') => `<span class="chip ${c}">${esc(t)}</span>`, H = h => ({ h }), pub = e => H(e.d.draft === true ? chip('Draft', 'warn') : chip('Published', 'ok'));
+const srcTitle = s => (srcs.find(x => x.s === s) || {}).title || s;
+const COLS = {
+  post: [['Title', e => e.d.title], ['Category', e => e.d.category], ['Date', e => fd(e.d.date)], ['Status', e => H(pub(e).h + (e.d.pinned ? chip('Pinned') : ''))]],
+  note: [['Title', e => e.d.title], ['Date', e => fd(e.d.date)], ['Status', pub]],
+  learn: [['#', e => e.d.order], ['Title', e => e.d.title], ['Course · Phase', e => `${e.d.course} · ${e.d.phase}`], ['Status', pub]],
+  moment: [['Photo', e => H(`<img class="th" src="https://raw.githubusercontent.com/${repo}/${branch}/public${esc(e.d.image)}" alt="" loading="lazy">`)], ['Title', e => e.d.title], ['Location', e => e.d.location], ['Date', e => fd(e.d.date)]],
+  source: [['Title', e => e.d.title], ['Kind', e => e.d.type], ['Authors', e => [e.d.authors, e.d.year].filter(Boolean).join(' · ')], ['Progress', e => e.d.status], ['Status', pub]],
+  log: [['Title', e => e.d.title || '(untitled)'], ['Source', e => srcTitle(e.d.source)], ['Pages', e => e.d.pages], ['Date', e => fd(e.d.date)], ['Status', pub]],
+};
+function renderList() {
+  const t = SEC, v = $('lq').value.toLowerCase(), cols = COLS[t], rows = DB[t].filter(e => !v || JSON.stringify(e.d).toLowerCase().includes(v) || e.s.includes(v));
+  $('lc').textContent = DB[t].length ? `${rows.length} of ${DB[t].length}` : '';
+  $('lt').innerHTML = LOADING && !DB[t].length ? '<div class="empty">Loading…</div>' : !DB[t].length ? `<div class="empty"><p>No ${T[t].n.toLowerCase()} yet.</p><button class="btn pri" onclick="neu('${t}')">+ Create the first one</button></div>`
+    : !rows.length ? '<div class="empty">No results.</div>' : `<table><thead><tr>${cols.map(c => `<th>${c[0]}</th>`).join('')}</tr></thead><tbody>${rows.map(e => `<tr class="row" onclick="load('${t}','${e.s}')">${cols.map((c, i) => { const x = c[1](e); return `<td class="${i === 0 ? 'ttl' : ''}">${x && x.h !== undefined ? x.h : esc(x)}</td>`; }).join('')}</tr>`).join('')}</tbody></table>`;
+}
+
+/* ---------- editor ---------- */
+function applyType() {
+  const t = $('type').value; document.querySelectorAll('#v-edit [data-t]').forEach(e => e.hidden = !e.dataset.t.split(' ').includes(t));
+  $('sumlbl').firstElementChild.textContent = { post: 'Excerpt', note: 'Summary', learn: 'Subtitle', moment: 'Caption', source: 'Why this source matters' }[t] || 'Summary';
+  $('datelbl').firstElementChild.textContent = t === 'source' ? 'Date added' : 'Date';
+  $('slughint').textContent = { post: '/writing/', note: '/notes/', learn: '/learn/<course>/', source: '/research/' }[t] ? 'Appears as ' + { post: '/writing/', note: '/notes/', learn: '/learn/<course>/', source: '/research/' }[t] + 'your-slug. Cannot change after publishing.' : '';
+}
+function setTab(x) { const w = x === 'write'; $('body').hidden = !w; $('pv').hidden = w; $('tools').hidden = !w; $('tw').classList.toggle('on', w); $('tp').classList.toggle('on', !w); if (!w) renderPreview(); }
+function openEditor(t) { SEC = t; VIEW = 'edit'; ['home', 'list', 'social'].forEach(x => $('v-' + x).hidden = true); $('v-edit').hidden = false; $('type').value = t; applyType(); setTab('write'); markNav(); window.scrollTo(0, 0); }
+function neu(t) {
+  loaded = null; curImage = ''; openEditor(t);
+  ['title', 'slug', 'cat', 'tags', 'sum', 'body', 'course', 'phase', 'loc', 'author', 'blink', 'pg', 'year', 'venue', 'doi'].forEach(i => $(i).value = '');
+  $('order').value = 1; $('status').value = 'reading'; $('stype').value = 'paper'; $('lic').value = 'open'; $('color').value = '#1D6FA4'; $('date').value = today(); $('draft').checked = false; $('pinned').checked = false;
+  $('slug').readOnly = false; $('del').hidden = true; $('viewlive').hidden = true; $('pstate').textContent = 'New entry (not published yet)'; $('drop').hidden = false; $('mthumb').hidden = true;
+  head('New ' + T[t].s.toLowerCase(), T[t].d, `<button class="btn" onclick="go('list','${t}')">← Back to ${T[t].n.toLowerCase()}</button>`);
+}
+async function load(t, s) {
+  try { const f = await get(`src/content/${T[t].dir}/${s}.md`), { d, body } = parseFm(dec(f.content)); openEditor(t); loaded = s;
+    $('title').value = d.title || ''; $('slug').value = s.split('/').pop(); $('slug').readOnly = true; $('date').value = fd(d.date); $('cat').value = d.category || '';
+    $('tags').value = (d.tags || []).join(', '); $('sum').value = d.excerpt || d.summary || d.subtitle || d.caption || ''; $('draft').checked = d.draft === true; $('pinned').checked = d.pinned === true; $('body').value = body;
+    $('course').value = d.course || ''; $('phase').value = d.phase || ''; $('color').value = d.color || '#1D6FA4'; $('order').value = d.order || 1; fillPhases();
+    $('loc').value = d.location || ''; curImage = d.image || ''; $('author').value = d.authors || ''; $('stype').value = d.type || 'paper'; $('year').value = d.year || ''; $('venue').value = d.venue || ''; $('doi').value = d.doi || '';
+    $('blink').value = d.url || ''; $('status').value = d.status || 'reading'; $('lic').value = d.license || 'open'; $('pg').value = d.pages || ''; if (d.source) $('bk').value = d.source;
+    $('del').hidden = false; $('pstate').textContent = d.draft === true ? 'Saved as draft (hidden from site)' : 'Published'; $('drop').hidden = t === 'moment'; $('mthumb').hidden = t !== 'moment' || !curImage;
+    if (curImage) $('mthumb').src = `https://raw.githubusercontent.com/${repo}/${branch}/public${curImage}`; setLive(t, s);
+    head('Edit ' + T[t].s.toLowerCase(), s, `<button class="btn" onclick="go('list','${t}')">← Back to ${T[t].n.toLowerCase()}</button>`);
+  } catch (e) { st('Error: ' + e.message); }
+}
+function setLive(t, s) { const v = $('viewlive'); v.href = liveUrl(t, s); v.hidden = $('draft').checked; }
+function fillPhases() { $('phases').innerHTML = [...new Set(idx.filter(d => d.course === $('course').value).map(d => d.phase))].map(p => `<option>${esc(p)}</option>`).join(''); }
+$('course').oninput = () => { fillPhases(); if (!loaded) { const o = idx.filter(d => d.course === $('course').value).map(d => +d.order); $('order').value = (o.length ? Math.max(...o) : 0) + 1; } };
+$('phase').onchange = () => { const m = idx.find(d => d.course === $('course').value && d.phase === $('phase').value); if (m) $('color').value = m.color; };
+$('title').oninput = () => { if (!loaded) $('slug').value = slugify($('title').value); };
+function card() { ins('\n## Card title\n\nExplain it simply here.\n\n> Analogy: a real-life comparison.\n\n```\nformula = here\n```\n'); }
+function saved(t, s) { loaded = s; $('slug').readOnly = true; $('del').hidden = false; $('pstate').textContent = $('draft').checked ? 'Saved as draft (hidden from site)' : 'Published'; setLive(t, s); st('Published ✓ Your site will update in 1–2 minutes.'); refresh(); }
+async function save() {
+  const t = $('type').value, tg = $('tags').value.split(',').map(x => x.trim()).filter(Boolean); let slug = $('slug').value.trim(), s = slug, lines;
+  const need = !$('title').value.trim() ? 'A title is required.' : ['post', 'note', 'learn', 'source'].includes(t) && !/^[a-z0-9][a-z0-9-]*$/.test(slug) ? 'The URL slug may only use a–z, 0–9 and hyphens.' : '';
+  if (need && t !== 'log' && t !== 'moment') return st('Error: ' + need);
+  if (t === 'moment') {
+    if (!loaded || !curImage) return st('Error: Upload at least one photo first, or open an existing moment.');
+    if (!$('title').value.trim()) return st('Error: A title is required.');
+    lines = [`title: ${q($('title').value)}`, `date: ${$('date').value || today()}`, `location: ${q($('loc').value)}`, `caption: ${q($('sum').value)}`, `image: ${q(curImage)}`]; s = loaded;
+  } else if (t === 'learn') {
+    if (!$('course').value.trim() || !$('phase').value.trim()) return st('Error: Course and Phase are required.'); s = slugify($('course').value) + '/' + slug;
+    lines = [`title: ${q($('title').value)}`, `course: ${q($('course').value.trim())}`, `phase: ${q($('phase').value.trim())}`, `color: ${q($('color').value)}`, `order: ${+$('order').value || 1}`, `subtitle: ${q($('sum').value)}`];
+  } else if (t === 'source') {
+    lines = [`title: ${q($('title').value)}`, `type: ${q($('stype').value)}`, `authors: ${q($('author').value.trim())}`, ...($('year').value ? [`year: ${+$('year').value}`] : []), `venue: ${q($('venue').value.trim())}`, `doi: ${q($('doi').value.trim())}`, `url: ${q($('blink').value.trim())}`, `status: ${q($('status').value)}`, `license: ${q($('lic').value)}`, `date: ${$('date').value || today()}`, `tags: ${q(tg)}`, `summary: ${q($('sum').value)}`];
+  } else if (t === 'log') {
+    if (!$('bk').value) return st('Error: Create a research source first, then add notes to it.');
+    const date = $('date').value || today(); s = loaded || ($('bk').value + '--' + date); if (!loaded) { while (await get(`src/content/logs/${s}.md`)) s += '-b'; }
+    lines = [`source: ${q($('bk').value)}`, `date: ${date}`, `pages: ${q($('pg').value)}`, `title: ${q($('title').value)}`];
+  } else {
+    lines = [`title: ${q($('title').value)}`, `date: ${$('date').value || today()}`, ...(t === 'post' ? [`category: ${q($('cat').value || 'Writing')}`, ...($('pinned').checked ? ['pinned: true'] : []), ...(loaded ? [`updated: ${today()}`] : [])] : []), `tags: ${q(tg)}`, `${t === 'post' ? 'excerpt' : 'summary'}: ${q($('sum').value)}`];
+  }
+  const withBody = t !== 'moment', fm = ['---', ...lines, `draft: ${$('draft').checked}`, '---', ''].join('\n') + (withBody ? $('body').value + '\n' : '');
+  try { st('Publishing…'); await put(`src/content/${T[t].dir}/${s}.md`, enc(fm), 'content: ' + s); if (t === 'log') $('slug').value = s; saved(t, s); } catch (e) { st('Error: ' + e.message); }
+}
+async function remove() {
+  if (!loaded) return; const t = $('type').value; if (!confirm(`Delete "${$('title').value}"? This cannot be undone.`)) return;
+  try {
+    st('Deleting…'); await del(`src/content/${T[t].dir}/${loaded}.md`, 'delete: ' + loaded);
+    if (t === 'moment') { if (curImage) await del('public' + curImage, 'delete photo: ' + loaded); }
+    else if (t === 'source') {
+      if (confirm('Also delete all research notes written for this source?')) { const l = await gh(`/contents/src/content/logs?ref=${branch}`).catch(() => []); for (const f of l.filter(f => f.name.startsWith(loaded + '--'))) await del(f.path, 'delete note: ' + f.name); }
+      if (confirm(`Also delete uploaded images and videos for this source (public/media/${loaded})?`)) { const l2 = await gh(`/contents/public/media/${loaded}?ref=${branch}`).catch(() => []); for (const f of l2) await del(f.path, 'delete media: ' + f.name); }
+    } else if (t === 'log') {
+      const im = [...$('body').value.matchAll(/\((\/media\/pen\/[^)]+)\)/g)].map(m => m[1]);
+      if (im.length && confirm(`Also delete ${im.length} pen page image(s) used in this note?`)) for (const p of im) await del('public' + p, 'delete pen page');
+    } else if (confirm(`Also delete uploaded images and videos for this entry (public/media/${$('slug').value})?`)) {
+      const l = await gh(`/contents/public/media/${$('slug').value}?ref=${branch}`).catch(() => []); for (const f of l) await del(f.path, 'delete media: ' + f.name);
+    }
+    st('Deleted ✓ Your site will update in 1–2 minutes.'); loaded = null; await refresh(); go('list', t);
+  } catch (e) { st('Error: ' + e.message); }
+}
+
+/* ---------- moments, uploads, editor tools ---------- */
+const toB64 = blob => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result.split(',')[1]); fr.readAsDataURL(blob); });
+async function shrink(f) { const im = await createImageBitmap(f), k = Math.min(1, 1920 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = im.width * k; c.height = im.height * k; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(im, 0, 0, c.width, c.height); return new Promise(r => c.toBlob(r, 'image/jpeg', .85)); }
+async function addMoments(files) {
+  let n = 0;
+  for (const f of files) {
+    try {
+      st(`Uploading ${f.name}…`); const s = (slugify(f.name.replace(/\.\w+$/, '')) || 'photo') + '-' + Date.now().toString(36);
+      await put(`public/media/moments/${s}.jpg`, await toB64(await shrink(f)), 'moment photo: ' + s);
+      const fm = ['---', `title: ${q($('title').value.trim() || f.name.replace(/\.\w+$/, '').replace(/[-_]+/g, ' '))}`, `date: ${$('date').value || today()}`, `location: ${q($('loc').value)}`, `caption: ${q($('sum').value)}`, `image: ${q('/media/moments/' + s + '.jpg')}`, 'draft: false', '---', ''].join('\n');
+      await put(`src/content/moments/${s}.md`, enc(fm), 'moment: ' + s); n++;
+    } catch (e) { st('Error: ' + e.message); break; }
+  }
+  if (n) { st(`Published ✓ ${n} photo${n > 1 ? 's' : ''} added. Your site will update in 1–2 minutes.`); await refresh(); go('list', 'moment'); }
+}
+const b = $('body');
+function ins(a, c = '') { if (b.hidden) setTab('write'); b.setRangeText(a + c, b.selectionStart, b.selectionEnd, 'end'); b.focus(); }
+function wrap(w) { b.setRangeText(w + b.value.slice(b.selectionStart, b.selectionEnd) + w, b.selectionStart, b.selectionEnd, 'end'); b.focus(); }
+function yt() { const v = prompt('Paste a YouTube link'); const m = v && v.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{6,})/); if (m) ins(`\n\n![Video](youtube:${m[1]})\n\n`); }
+function licOk() { const x = srcs.find(z => z.s === $('bk').value); if ($('type').value !== 'log' || !x || x.lic !== 'copyrighted') return true;
+  return confirm('This source is marked as copyrighted.\nOnly add your own writing or a very short excerpt, never a full page. Everything you add is public on your site. Continue?'); }
+async function up(files) {
+  if (!licOk()) return; const s = $('type').value === 'log' ? ($('bk').value || 'uploads') : ($('slug').value.trim() || 'uploads');
+  for (const f of files) {
+    try {
+      st(`Uploading ${f.name}…`); let blob = f, name = f.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-');
+      if (/^image\/(jpeg|png|webp)$/.test(f.type)) { blob = await shrink(f); name = name.replace(/\.\w+$/, '') + '.jpg'; }
+      if (blob.size > 25e6) { st('Error: File is larger than 25 MB. Use YouTube for long videos.'); continue; }
+      await put(`public/media/${s}/${name}`, await toB64(blob), 'media: ' + name);
+      const url = `/media/${s}/${name}`; blobs[url] = URL.createObjectURL(blob); ins(`\n\n![${name.replace(/\.\w+$/, '').replace(/[-_]+/g, ' ')}](${url})\n\n`); st('Uploaded ✓ Remember to publish the entry.');
+    } catch (e) { st('Error: ' + e.message); }
+  }
+}
+b.ondragover = e => { e.preventDefault(); b.classList.add('over'); }; b.ondragleave = () => b.classList.remove('over');
+b.ondrop = e => { e.preventDefault(); b.classList.remove('over'); up([...e.dataTransfer.files]); }; b.onpaste = e => { const fs = [...e.clipboardData.files]; if (fs.length) { e.preventDefault(); up(fs); } };
+const dz = $('drop'); dz.ondragover = e => { e.preventDefault(); dz.classList.add('over'); }; dz.ondragleave = () => dz.classList.remove('over'); dz.ondrop = e => { e.preventDefault(); dz.classList.remove('over'); addMoments([...e.dataTransfer.files].filter(f => f.type.startsWith('image/'))); };
+const inl = t => esc(t).replace(/`(.+?)`/g, '<code>$1</code>').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*(.+?)\*/g, '<i>$1</i>').replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>');
+function renderPreview() {
+  $('pv').innerHTML = b.value.split(/\n{2,}/).map(x => { x = x.trim(); let m;
+    if (m = x.match(/^(#{1,4})\s+(.*)/)) return `<h${m[1].length + 1}>${inl(m[2])}</h${m[1].length + 1}>`;
+    if (m = x.match(/^!\[(.*?)\]\((.*?)\)$/)) { const s = blobs[m[2]] || m[2]; return /^youtube:/.test(s) ? `<iframe src="https://www.youtube-nocookie.com/embed/${esc(s.slice(8))}"></iframe>` : /\.(mp4|webm|mov|m4v)$/i.test(s) ? `<video controls src="${esc(s)}"></video>` : `<figure><img src="${esc(s)}"><figcaption class="mu">${esc(m[1])}</figcaption></figure>`; }
+    if (x.startsWith('```')) return `<pre>${esc(x.replace(/```\w*\n?/g, ''))}</pre>`;
+    if (/^>/.test(x)) return `<blockquote>${inl(x.replace(/^>\s?/gm, ' '))}</blockquote>`;
+    if (/^[-*] /.test(x)) return '<ul>' + x.split('\n').map(l => `<li>${inl(l.replace(/^[-*] /, ''))}</li>`).join('') + '</ul>';
+    return x ? `<p>${inl(x)}</p>` : ''; }).join('') || '<p class="mu">Nothing to preview yet.</p>';
+}
+
+/* ---------- social links ---------- */
+const SOC = ['github', 'linkedin', 'x', 'instagram', 'youtube', 'facebook'];
+async function loadSocial() { try { const f = await get('src/data/social.json'), d = f ? JSON.parse(dec(f.content)) : {}; SOC.forEach(k => $('s_' + k).value = d[k] || ''); } catch (e) { st('Error: ' + e.message); } }
+async function saveSocial() { const d = {}; SOC.forEach(k => d[k] = $('s_' + k).value.trim()); try { st('Publishing…'); await put('src/data/social.json', enc(JSON.stringify(d, null, 2) + '\n'), 'social links'); st('Published ✓ Your site will update in 1–2 minutes.'); } catch (e) { st('Error: ' + e.message); } }
+
+/* ---------- pen notebook ---------- */
+const PC = { c: null, x: null, P: [{ bg: null, url: '', h: 800, S: [] }], i: 0, cur: null, color: '#1b1b1b', w: 3, tool: 'pen', er: false, pen: false };
+const pgx = () => PC.P[PC.i];
+const ppt = e => { const r = PC.c.getBoundingClientRect(); return { x: (e.clientX - r.left) * PC.c.width / r.width, y: (e.clientY - r.top) * PC.c.height / r.height, p: e.pressure > 0 ? e.pressure : .5 }; };
+function segTo(x, s, i) { const a = s.pts[i - 1], c = s.pts[i]; if (!a) return; x.save(); x.lineCap = x.lineJoin = 'round'; x.globalCompositeOperation = s.er ? 'destination-out' : 'source-over'; x.strokeStyle = s.color;
+  x.lineWidth = s.er ? s.w * 7 : s.w * (.4 + (a.p + c.p) / 2 * 1.6); x.beginPath(); x.moveTo(a.x, a.y); x.lineTo(c.x, c.y); x.stroke(); x.restore(); }
+function drawTo(x, s) {
+  if (s.text) { x.save(); x.fillStyle = s.color; x.font = `${s.size}px "Segoe Print","Comic Sans MS",cursive`; x.fillText(s.text, s.x, s.y); x.restore(); }
+  else if (s.hl) { x.save(); x.lineCap = x.lineJoin = 'round'; x.globalAlpha = .35; x.strokeStyle = s.color; x.lineWidth = s.w * 6; x.beginPath(); s.pts.forEach((p, i) => i ? x.lineTo(p.x, p.y) : x.moveTo(p.x, p.y)); x.stroke(); x.restore(); }
+  else for (let i = 1; i < s.pts.length; i++) segTo(x, s, i); }
+function predraw() { PC.x.clearRect(0, 0, PC.c.width, PC.c.height); pgx().S.forEach(s => drawTo(PC.x, s)); }
+function penShow() { const p = pgx(), c = PC.c; c.width = 1400; c.height = p.h; c.style.backgroundImage = p.url ? `url(${p.url})` : 'none'; c.style.backgroundSize = '100% 100%'; $('pcount').textContent = `Page ${PC.i + 1}/${PC.P.length}`; predraw(); }
+function openPen() { $('pen').showModal(); if (!PC.c) { const c = PC.c = $('pc'); PC.x = c.getContext('2d');
+  c.onpointerdown = e => { if (e.pointerType === 'pen') PC.pen = true; if (e.pointerType === 'touch' && PC.pen) return;
+    if (PC.tool === 'text') { const t = prompt('Text to place on the page'); if (t) { const p = ppt(e); pgx().S.push({ text: t, x: p.x, y: p.y, color: PC.color, size: 22 + PC.w * 4 }); predraw(); } return; }
+    c.setPointerCapture(e.pointerId); PC.cur = { color: PC.color, w: PC.w, hl: PC.tool === 'hl', er: PC.er || (e.buttons & 32) > 0, pts: [ppt(e)] }; pgx().S.push(PC.cur); };
+  c.onpointermove = e => { const s = PC.cur; if (!s) return; (e.getCoalescedEvents ? e.getCoalescedEvents() : [e]).forEach(ev => { s.pts.push(ppt(ev)); if (!s.hl) segTo(PC.x, s, s.pts.length - 1); }); if (s.hl) predraw(); };
+  c.onpointerup = c.onpointercancel = () => { PC.cur = null; }; }
+  penShow(); }
+function penTool(color, tool) { PC.color = color; PC.tool = tool; PC.er = false; $('peraser').style.background = ''; }
+function penEraser() { PC.er = !PC.er; PC.tool = 'pen'; $('peraser').style.background = PC.er ? 'var(--acb)' : ''; }
+function penUndo() { pgx().S.pop(); predraw(); }
+function penClear() { if (pgx().S.length && confirm('Clear everything written on this page?')) { pgx().S = []; predraw(); } }
+function penGo(d) { PC.i = Math.max(0, Math.min(PC.P.length - 1, PC.i + d)); penShow(); }
+function penAdd() { PC.P.push({ bg: null, url: '', h: 800, S: [] }); PC.i = PC.P.length - 1; penShow(); }
+async function penBg(f) { if (!f || !licOk()) return; const im = await createImageBitmap(f), p = pgx();
+  if (p.S.length && !confirm('This page already has writing, which may shift against the new image. Adding a new page is safer. Continue anyway?')) return;
+  p.bg = im; p.url = URL.createObjectURL(f); p.h = Math.min(2600, Math.round(1400 * im.height / im.width)); penShow(); }
+$('pen').addEventListener('paste', e => { const f = [...e.clipboardData.files].find(x => x.type.startsWith('image/')); if (f) { e.preventDefault(); penBg(f); } });
+async function penInsert() {
+  const pages = PC.P.filter(p => p.S.length || p.bg); if (!pages.length) return st('Error: Write or add an image first.'); if (pages.some(p => p.bg) && !licOk()) return;
+  try { let out = '';
+    for (const [n, p] of pages.entries()) { st(`Saving page ${n + 1} of ${pages.length}…`);
+      const sc = document.createElement('canvas'); sc.width = 1400; sc.height = p.h; const sx = sc.getContext('2d'); p.S.forEach(s => drawTo(sx, s));
+      const o = document.createElement('canvas'); o.width = 1400; o.height = p.h; const x = o.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, 1400, p.h); if (p.bg) x.drawImage(p.bg, 0, 0, 1400, p.h); x.drawImage(sc, 0, 0);
+      const jpg = !!p.bg, blob = await new Promise(r => o.toBlob(r, jpg ? 'image/jpeg' : 'image/png', .9)), name = `pen-${Date.now().toString(36)}-${n + 1}.${jpg ? 'jpg' : 'png'}`;
+      await put(`public/media/pen/${name}`, await toB64(blob), 'pen page: ' + name); out += `\n\n![${jpg ? 'Annotated screenshot' : 'Handwritten page'} ${n + 1}](/media/pen/${name})\n\n`; }
+    ins(out); PC.P = [{ bg: null, url: '', h: 800, S: [] }]; PC.i = 0; penShow(); $('pen').close(); st('Pen pages added ✓ Remember to publish the entry.');
+  } catch (e) { st('Error: ' + e.message); }
+}
+
+/* ---------- boot ---------- */
+addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's' && VIEW === 'edit') { e.preventDefault(); save(); } });
+$('repo').value = LS.gh_repo || 'mishraxharshit/harshitxmishra.github.io';
+if (tok) gh('').then(r => { branch = r.default_branch; start(); }).catch(() => { $('err').textContent = 'Your saved token is invalid or has expired. Please enter a new one.'; });
+</script></body></html>

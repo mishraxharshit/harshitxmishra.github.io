@@ -1,0 +1,37 @@
+---
+import { render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import Moments from '@/components/Moments.astro';
+import { getResearch, extract, penImages, figureImages, bibtex, authorList, TYPES, STATUS } from '@/lib/research';
+import { u } from '@/lib/url';
+export async function getStaticPaths() { return (await getResearch()).map(b => ({ params: { source: b.id }, props: { b } })); }
+const { b } = Astro.props as any, d = b.src.data;
+const { Content: Overview } = await render(b.src);
+const rendered = await Promise.all(b.notes.map(async (s: any) => ({ s, C: (await render(s)).Content })));
+const pick = (k: string) => b.notes.flatMap((s: any) => extract(s.body, k).map(t => ({ t, s })));
+const hl = pick('HIGHLIGHT'), qs = pick('QUESTION'), bib = bibtex(b.id, d);
+const gal = (fn: (x: string) => string[], title: string) => b.notes.flatMap((s: any) => fn(s.body)).map((image: string) => ({ data: { image, title, location: '', caption: '' } }));
+const pens = gal(penImages, 'Pen page'), figs = gal(figureImages, 'Figure or screenshot');
+const f = (x: Date) => x.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const toc = [['overview', 'Overview', !!b.src.body.trim()], ['log', 'Notes', rendered.length > 0], ['highlights', 'Highlights', hl.length > 0], ['questions', 'Questions', qs.length > 0], ['pen', 'Pen pages', pens.length > 0], ['figures', 'Figures and screenshots', figs.length > 0], ['cite', 'Cite', true]].filter(x => x[2]);
+---
+<Base title={d.title} description={d.summary} wide math={[b.src.body, ...b.notes.map((s: any) => s.body)].some((x: string) => x && x.includes('$'))}>
+  <div class="docs nolead"><article class="article" style="max-width:none">
+    <p class="mono"><a href={u('/research/')}>Research</a> / <span class="badge" style={`--c:var(--t-${d.type})`}>{TYPES[d.type]}</span> {STATUS[d.status]}</p>
+    <h1>{d.title}</h1>
+    <p class="lede">{authorList(d.authors).join(', ')}{(d.year || d.venue) && ` · ${[d.venue, d.year].filter(Boolean).join(' ')}`}</p>
+    {d.summary && <p class="dim">{d.summary}</p>}
+    <p class="mono">{d.url && <a class="chip" href={d.url} target="_blank" rel="noopener">Open source ↗</a>} {d.doi && <a class="chip" href={`https://doi.org/${d.doi}`} target="_blank" rel="noopener">DOI ↗</a>} <button class="chip" data-copy={bib}>Copy BibTeX</button></p>
+    {d.tags.length > 0 && <div class="tags mono dim">{d.tags.map((t: string) => <span>{t}</span>)}</div>}
+    {d.license === 'copyrighted' && <p class="mono dim" style="margin-top:1rem">Copyrighted source: yahan sirf meri tippani aur chhote quotes hain.</p>}
+    {b.src.body.trim() && <section id="overview" class="prose"><Overview /></section>}
+    {rendered.length > 0 && <section id="log"><h2 class="label">Notes</h2>
+      {rendered.map(({ s, C }: any) => <section class="session" id={`s-${s.id}`}><h3 style="margin:0 0 .6rem;font-weight:500"><span class="mono dim">{f(s.data.date)}</span> {s.data.pages && <span class="chip">p. {s.data.pages}</span>} {s.data.title}</h3><div class="prose"><C /></div></section>)}</section>}
+    {hl.length > 0 && <section id="highlights"><h2 class="label">Highlights</h2><ul class="hl">{hl.map(({ t, s }: any) => <li><q>{t}</q><small class="mono dim">{f(s.data.date)}{s.data.pages && ` · p. ${s.data.pages}`}</small></li>)}</ul></section>}
+    {qs.length > 0 && <section id="questions"><h2 class="label">Questions</h2><ul class="hl qs">{qs.map(({ t, s }: any) => <li><q>{t}</q><small class="mono dim">{f(s.data.date)}</small></li>)}</ul></section>}
+    {pens.length > 0 && <section id="pen"><h2 class="label">Pen pages</h2><Moments items={pens} uid="pen" /></section>}
+    {figs.length > 0 && <section id="figures"><h2 class="label">Figures and screenshots</h2><Moments items={figs} uid="fig" /></section>}
+    <section id="cite"><h2 class="label">Cite</h2><pre class="bib">{bib}</pre></section>
+  </article>
+  <aside class="toc-side">{toc.map(x => <a href={`#${x[0]}`}>{x[1]}</a>)}</aside></div>
+</Base>

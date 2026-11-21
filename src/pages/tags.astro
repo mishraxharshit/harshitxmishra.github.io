@@ -1,0 +1,14 @@
+---
+import { u } from '@/lib/url';
+import Base from '@/layouts/Base.astro';
+import { published } from '@/lib/content';
+import { slug } from '@/lib/learn';
+const map = new Map<string, any[]>();
+(await published('posts')).forEach(p => p.data.tags.forEach((t: string) => map.set(t, [...(map.get(t) || []), p])));
+const tags = [...map.entries()].sort((a, b) => b[1].length - a[1].length);
+---
+<Base title="Tags"><div style="padding:2rem 0"><h1>Tags</h1>
+  {tags.length === 0 && <p class="dim">No tags yet.</p>}
+  <div class="filters">{tags.map(([t, l]) => <a class="chip" href={`#${slug(t)}`}>{t} · {l.length}</a>)}</div>
+  {tags.map(([t, l]) => <section id={slug(t)} style="scroll-margin-top:5rem"><h2 class="label">{t}</h2>{l.map(p => <a class="row" href={u(`/writing/${p.id}/`)}><span class="mono">{p.data.category}</span><div><h3>{p.data.title}</h3></div></a>)}</section>)}
+</div></Base>

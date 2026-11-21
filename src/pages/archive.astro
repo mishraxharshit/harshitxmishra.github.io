@@ -1,0 +1,12 @@
+---
+import { u } from '@/lib/url';
+import Base from '@/layouts/Base.astro';
+import { published } from '@/lib/content';
+const posts = await published('posts'), by: Record<string, any[]> = {};
+posts.forEach(p => (by[p.data.date.getFullYear()] ||= []).push(p));
+const years = Object.keys(by).sort((a, b) => +b - +a);
+---
+<Base title="Archive"><div class="years" style="padding:2rem 0"><h1>Archive</h1>
+  {years.length === 0 && <p class="dim">Nothing yet.</p>}
+  {years.map(y => <section><h2>{y}</h2>{by[y].map(p => <a class="row" href={u(`/writing/${p.id}/`)}><span class="mono">{p.data.date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}</span><div><h3>{p.data.title}</h3></div></a>)}</section>)}
+</div></Base>

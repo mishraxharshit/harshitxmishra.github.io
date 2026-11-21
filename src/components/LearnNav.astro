@@ -1,0 +1,9 @@
+---
+import { u } from '@/lib/url';
+const { courses, course, topic } = Astro.props;
+---
+<aside class="sidenav"><details open id="sn"><summary class="mono">Course map</summary>
+  {courses.map((c: any) => <div><p class="mono cn-t">{c.title}</p>
+    {c.phases.map((p: any) => <div><p class="ph" style={`--c:${p.color}`}><i></i>{p.label}</p>
+      {p.topics.map((t: any) => <a class="nv" href={u(`/learn/${c.id}/${t.id}/`)} aria-current={c.id === course && t.id === topic ? 'page' : undefined}><span class="px sm" style={`--c:${p.color}`}>{t.n}</span>{t.title}</a>)}</div>)}</div>)}
+</details></aside>

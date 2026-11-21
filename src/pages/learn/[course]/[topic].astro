@@ -1,0 +1,40 @@
+---
+import { u } from '@/lib/url';
+import { render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import { getCourses } from '@/lib/learn';
+import LearnNav from '@/components/LearnNav.astro';
+export async function getStaticPaths() {
+  return (await getCourses()).flatMap(c => c.topics.map((t: any, i: number) => ({
+    params: { course: c.id, topic: t.id }, props: { course: c, topic: t, prev: c.topics[i - 1], next: c.topics[i + 1] },
+  })));
+}
+const { course, topic, prev, next } = Astro.props as any;
+const { Content, headings } = await render(topic.entry);
+const toc = headings.filter(h => h.depth === 2);
+const courses = await getCourses();
+---
+<Base title={topic.title} description={topic.subtitle} wide math={topic.entry.body?.includes('$')}>
+  <div class="docs">
+  <LearnNav courses={courses} course={course.id} topic={topic.id} />
+  <article style="padding:1rem 0">
+    <p class="mono" style="margin:0 0 1rem"><a href={u("/learn/")}>Learn</a> / {course.title} / {topic.phase.label}</p>
+    <h1><span class="px" style={`--c:${topic.phase.color};display:inline-grid;vertical-align:.2em;margin-right:.6rem`}>{topic.n}</span>{topic.title}</h1>
+    {topic.subtitle && <p class="lede">{topic.subtitle}</p>}
+    <div class="cards prose" style={`--clr:${topic.phase.color}`}><Content /></div>
+    <nav class="pager mono">
+      {prev ? <a href={u(`/learn/${course.id}/${prev.id}/`)}>← {prev.title}</a> : <span />}
+      {next ? <a href={u(`/learn/${course.id}/${next.id}/`)}>{next.title} →</a> : <span />}
+    </nav>
+  </article>
+  <aside class="toc-side">{toc.length > 0 && <span class="mono dim">On this page</span>}{toc.map(h => <a href={`#${h.slug}`}>{h.text}</a>)}</aside>
+  </div>
+</Base>
+<style is:global>
+  .cards.prose{display:grid;gap:1.5rem;max-width:none;font-size:1.05rem;line-height:1.65}
+  .cards .card{border:2px solid var(--ink);box-shadow:6px 6px 0 var(--clr);background:var(--card);padding:1.4rem 1.6rem}
+  .cards .card h2{font-size:1.5rem;margin:0 0 .6rem}.cards .card p{margin:.6rem 0 0}
+  .cards .card blockquote{margin:1rem 0 0;padding:.8rem 0 0;border:0;border-top:2px dashed var(--line)}
+  .cards .card pre{margin:1rem 0 0;box-shadow:none;background:var(--bg);border:1px solid var(--line)}
+  .pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem}.pager a:hover{color:var(--hot)}
+</style>

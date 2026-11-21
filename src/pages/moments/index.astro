@@ -1,0 +1,11 @@
+---
+import Base from '@/layouts/Base.astro';
+import Moments from '@/components/Moments.astro';
+import { published } from '@/lib/content';
+const items = await published('moments');
+---
+<Base title="Moments" description="Wildlife photography by Harshit Mishra.">
+  <div style="padding:2rem 0 1rem"><h1>Moments</h1><p class="dim" style="margin:0">Wildlife, ek frame mein. Photo par click karke bada dekho.</p></div>
+  {items.length === 0 && <p class="dim">Abhi koi photo nahi hai.</p>}
+  <Moments items={items} />
+</Base>

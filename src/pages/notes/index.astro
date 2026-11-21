@@ -1,0 +1,17 @@
+---
+import { u } from '@/lib/url';
+import { getCollection } from 'astro:content';
+import { published } from '@/lib/content';
+import Base from '@/layouts/Base.astro';
+const notes = (await published('notes')).sort((a, b) => +b.data.date - +a.data.date);
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+<Base title="Notes">
+  <h1 style="font-weight:500;font-size:clamp(2.6rem,9vw,6rem);letter-spacing:-.045em;line-height:.95;margin:0;padding:clamp(2.5rem,8vw,5rem) 0 2rem;border-bottom:1px solid var(--rule)">Notes</h1>
+  {notes.map(n => (
+    <section class="cell">
+      <span class="mono dim">{fmt(n.data.date)}</span>
+      <div class="list"><a href={u(`/notes/${n.id}/`)}><div><h3>{n.data.title}</h3><p>{n.data.summary}</p></div><span class="arrow">→</span></a></div>
+    </section>
+  ))}
+</Base>

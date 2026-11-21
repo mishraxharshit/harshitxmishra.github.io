@@ -1,0 +1,29 @@
+---
+import { u } from '@/lib/url';
+import Base from '@/layouts/Base.astro';
+import { published, readTime } from '@/lib/content';
+const posts = (await published('posts')).sort((a: any, b: any) => +b.data.pinned - +a.data.pinned);
+const all = [...new Set(posts.flatMap(p => [p.data.category, ...p.data.tags]))];
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+---
+<Base title="Writing" description="Learning logs, projects and field notes by Harshit Mishra.">
+  <div style="padding:2rem 0 1rem"><h1>Writing</h1><p class="dim" style="margin:0">Learning logs, projects and field notes.</p></div>
+  <p class="mono dim" style="margin:0 0 1rem"><a href={u("/archive/")}>Archive</a> · <a href={u("/tags/")}>Tags</a> · <a href={u("/rss.xml")}>RSS</a></p>
+  <div class="filters" id="filters">
+    <button class="chip" data-f="all" aria-pressed="true">All · {posts.length}</button>
+    {all.map(t => <button class="chip" data-f={t} aria-pressed="false">{t}</button>)}
+  </div>
+  <section id="rows">
+    {posts.length === 0 && <p class="dim">Nothing published yet.</p>}
+    {posts.map(p => <a class="row" href={u(`/writing/${p.id}/`)} data-k={[p.data.category, ...p.data.tags].join('|')}>
+      <span class="mono">{p.data.pinned ? "📌 " : ""}{fmt(p.data.date)}</span>
+      <div><h3>{p.data.title}</h3><p>{p.data.excerpt} <span class="mono">{readTime(p.body)}</span></p></div></a>)}
+  </section>
+</Base>
+<script is:inline>
+const bs = [...document.querySelectorAll('#filters button')];
+bs.forEach(b => b.onclick = () => {
+  bs.forEach(x => x.setAttribute('aria-pressed', x === b));
+  document.querySelectorAll('#rows .row').forEach(r => r.hidden = b.dataset.f !== 'all' && !r.dataset.k.split('|').includes(b.dataset.f));
+});
+</script>

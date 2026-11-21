@@ -1,0 +1,11 @@
+---
+import { u } from '@/lib/url';
+import { TYPES, STATUS, shortAuthors, extract, penImages, figureImages } from '@/lib/research';
+const { b } = Astro.props, d = b.src.data;
+const sum = (f: (s: string) => any[]) => b.notes.reduce((n: number, s: any) => n + f(s.body).length, 0);
+---
+<a class="sc" href={u(`/research/${b.id}/`)} data-k={[d.type, ...d.tags].join('|')} style={`--c:var(--t-${d.type})`}>
+  <div class="top"><span class="badge">{TYPES[d.type]}</span><span class="mono dim">{STATUS[d.status]}</span></div>
+  <b>{d.title}</b><small class="mono dim">{[shortAuthors(d.authors), d.year].filter(Boolean).join(' · ')}</small>
+  <div class="mono dim cnt">{sum(x => extract(x, 'HIGHLIGHT'))} highlights · {sum(penImages)} pen pages · {sum(figureImages)} images</div>
+</a>

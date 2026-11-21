@@ -1,0 +1,16 @@
+---
+import Base from '@/layouts/Base.astro';
+import { getResearch, bibtex, shortAuthors, TYPES } from '@/lib/research';
+import { u } from '@/lib/url';
+const lib = (await getResearch()).sort((a, b) => (shortAuthors(a.src.data.authors) || a.src.data.title).localeCompare(shortAuthors(b.src.data.authors) || b.src.data.title));
+const all = lib.map(b => bibtex(b.id, b.src.data)).join('\n\n');
+---
+<Base title="Bibliography" description="All sources as BibTeX.">
+  <div style="padding:2rem 0 1rem"><h1>Bibliography</h1><p class="dim" style="margin:0">{lib.length} sources. Copy ya .bib file download karo.</p>
+    <p class="mono" style="margin-top:1rem"><button class="chip" data-copy={all}>Copy all BibTeX</button> <button class="chip" id="dl">Download .bib</button></p></div>
+  {lib.map(b => <a class="row" href={u(`/research/${b.id}/`)}><span class="mono">{TYPES[b.src.data.type]}</span><div><h3>{b.src.data.title}</h3><p>{[shortAuthors(b.src.data.authors), b.src.data.year, b.src.data.venue].filter(Boolean).join(' · ')}</p></div></a>)}
+  <h2 class="label">BibTeX</h2><pre class="bib" id="bibtxt">{all}</pre>
+</Base>
+<script is:inline>
+document.getElementById('dl').onclick = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([document.getElementById('bibtxt').textContent], { type: 'text/plain' })); a.download = 'research.bib'; a.click(); };
+</script>

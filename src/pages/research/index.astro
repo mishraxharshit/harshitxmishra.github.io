@@ -1,0 +1,27 @@
+---
+import Base from '@/layouts/Base.astro';
+import SourceCard from '@/components/SourceCard.astro';
+import { getResearch, TYPES, penImages } from '@/lib/research';
+import { u } from '@/lib/url';
+const lib = await getResearch();
+const types = Object.keys(TYPES).filter(t => lib.some(b => b.src.data.type === t));
+const tags = [...new Set(lib.flatMap(b => b.src.data.tags))];
+const log = lib.flatMap(b => b.notes.map((s: any) => ({ s, b }))).sort((a, b) => +b.s.data.date - +a.s.data.date).slice(0, 15);
+const notes = lib.reduce((n, b) => n + b.notes.length, 0), done = lib.filter(b => b.src.data.status === 'done').length;
+const pens = lib.reduce((n, b) => n + b.notes.reduce((m: number, s: any) => m + penImages(s.body).length, 0), 0);
+const f = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+---
+<Base title="Research" description="Papers, books, notes, highlights and handwritten pages: Harshit's research notebook.">
+  <div style="padding:2rem 0 1rem"><h1>Research</h1><p class="dim" style="margin:0">Jahan main padhta, likhta, seekhta aur research karta hoon.</p>
+    <p class="mono" style="margin-top:1rem">{lib.length} sources · {done} done · {notes} notes · {pens} pen pages · <a href={u('/research/bibliography/')} style="color:var(--hot)">Bibliography</a></p></div>
+  {lib.length === 0 && <p class="dim">Abhi koi source nahi hai.</p>}
+  {lib.length > 0 && <div class="filters" id="flt"><button class="chip" data-f="all" aria-pressed="true">All · {lib.length}</button>
+    {types.map(t => <button class="chip" data-f={t} aria-pressed="false">{TYPES[t]}</button>)}{tags.map(t => <button class="chip" data-f={t} aria-pressed="false">#{t}</button>)}</div>}
+  <div class="shelf" id="cards">{lib.map(b => <SourceCard b={b} />)}</div>
+  {log.length > 0 && <section class="sec"><span class="mono dim">Research log</span><h2>Aaj kya <em>kiya</em>.</h2>
+    {log.map(({ s, b }) => <a class="row" href={u(`/research/${b.id}/#s-${s.id}`)}><span class="mono">{f(s.data.date)}</span><div><h3>{b.src.data.title}{s.data.pages && <span class="dim"> · p. {s.data.pages}</span>}</h3>{s.data.title && <p>{s.data.title}</p>}</div></a>)}</section>}
+</Base>
+<script is:inline>
+const bs = [...document.querySelectorAll('#flt button')];
+bs.forEach(b => b.onclick = () => { bs.forEach(x => x.setAttribute('aria-pressed', x === b)); document.querySelectorAll('#cards .sc').forEach(c => c.hidden = b.dataset.f !== 'all' && !c.dataset.k.split('|').includes(b.dataset.f)); });
+</script>

@@ -1,0 +1,16 @@
+---
+import { u } from '@/lib/url';
+import Base from '@/layouts/Base.astro';
+import { getCourses } from '@/lib/learn';
+const courses = await getCourses();
+---
+<Base title="Learn" description="Visual learning maps by Harshit Mishra.">
+  <div style="padding:2rem 0 1rem"><h1>Learn, visually.</h1><p class="dim" style="margin:0;max-width:44ch">Every concept gets a plain explanation, an analogy and, where it helps, a formula.</p></div>
+  {courses.length === 0 && <p class="dim">Abhi koi topic nahi hai.</p>}
+  {courses.map(c => <section><h2 class="label">{c.title} · {c.topics.length} topics</h2>
+    {c.phases.map((p: any) => <div style="margin-bottom:1.6rem">
+      <p class="mono dim" style="margin:0 0 .6rem"><i style={`display:inline-block;width:.6rem;height:.6rem;background:${p.color};margin-right:.5rem`}></i>{p.label}</p>
+      <div class="topics">{p.topics.map((t: any) => <a class="tp" href={u(`/learn/${c.id}/${t.id}/`)}><span class="px" style={`--c:${p.color}`}>{t.n}</span><span>{t.title}</span></a>)}</div></div>)}
+  </section>)}
+</Base>
+<style>.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.5rem 1.5rem}.tp{display:flex;align-items:center;gap:.8rem;padding:.3rem 0}.tp:hover span:last-child{color:var(--hot)}</style>

@@ -1,0 +1,33 @@
+---
+import { u } from '@/lib/url';
+import { render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import { published, readTime } from '@/lib/content';
+import { slug } from '@/lib/learn';
+export async function getStaticPaths() {
+  const all = await published('posts');
+  return all.map((post, i) => ({ params: { id: post.id }, props: { post, prev: all[i + 1], next: all[i - 1],
+    related: all.filter(x => x.id !== post.id && x.data.tags.some((t: string) => post.data.tags.includes(t))).slice(0, 3) } }));
+}
+const { post, prev, next, related } = Astro.props as any; const d = post.data;
+const { Content, headings } = await render(post);
+const toc = headings.filter(h => h.depth === 2);
+const f = (x: Date) => x.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title={d.title} description={d.excerpt} wide math={post.body.includes('$')}>
+  <div class="docs nolead">
+  <article class="article" style="max-width:none">
+    <p class="mono">{d.pinned && <span class="pin">📌 </span>}<span class="chip">{d.category}</span> {f(d.date)} · {readTime(post.body)}{d.updated && <> · updated {f(d.updated)}</>}</p>
+    <h1>{d.title}</h1>
+    {d.excerpt && <p class="lede">{d.excerpt}</p>}
+    {d.cover && <img class="cover" src={d.cover.startsWith('/') ? u(d.cover) : d.cover} alt="" />}
+    <div class="prose"><Content /></div>
+    <div class="tags mono dim">{d.tags.map((t: string) => <a href={u(`/tags/#${slug(t)}`)}><span>{t}</span></a>)}</div>
+    {related.length > 0 && <><h2 class="label">Related</h2>{related.map((r: any) => <a class="row" href={u(`/writing/${r.id}/`)}><span class="mono">{r.data.category}</span><div><h3>{r.data.title}</h3></div></a>)}</>}
+    <nav class="pager mono" style="display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem">
+      {prev ? <a href={u(`/writing/${prev.id}/`)}>← {prev.data.title}</a> : <span />}{next ? <a href={u(`/writing/${next.id}/`)}>{next.data.title} →</a> : <span />}
+    </nav>
+  </article>
+  <aside class="toc-side">{toc.length > 1 && <span class="mono dim">On this page</span>}{toc.length > 1 && toc.map(h => <a href={`#${h.slug}`}>{h.text}</a>)}</aside>
+  </div>
+</Base>

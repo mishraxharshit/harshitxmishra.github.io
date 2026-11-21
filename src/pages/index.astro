@@ -1,0 +1,90 @@
+---
+import { u } from '@/lib/url';
+import { getCollection } from 'astro:content';
+import { published } from '@/lib/content';
+import Base from '@/layouts/Base.astro';
+import { getCourses } from '@/lib/learn';
+import Moments from '@/components/Moments.astro';
+import SourceCard from '@/components/SourceCard.astro';
+import { getResearch } from '@/lib/research';
+import social from '@/data/social.json';
+const byDate = (a: any, b: any) => +b.data.date - +a.data.date;
+const notes = (await published('notes'));
+const courses = await getCourses();
+const moments = await published('moments');
+const research = await getResearch();
+const links = [['GitHub', 'github'], ['LinkedIn', 'linkedin'], ['X', 'x'], ['Instagram', 'instagram'], ['YouTube', 'youtube'], ['Facebook', 'facebook']].map(([name, k]) => ({ name, url: (social as any)[k] })).filter(l => l.url);
+const posts = (await published('posts')).sort((a: any, b: any) => +b.data.pinned - +a.data.pinned).slice(0, 3);
+const focus = [['Research', 'Turning open questions into experiments that can fail.'], ['Systems', 'Making the result run reliably outside the notebook.'], ['Clarity', 'Writing it down so someone else can check it.']];
+---
+<Base>
+  <canvas id="scene" class="scene" role="img" aria-label="Pixel-art wetland with flamingos. The sky follows your local time; touching the water makes ripples."></canvas>
+  <div class="intro"><img class="me" src={u("/me.jpg")} width="136" height="136" alt="Pixel-art portrait of Harshit Mishra" /><p class="mono dim hint">Sky follows your clock · touch the water</p></div>
+  <h1 class="name">Harshit<br /><em>Mishra</em>.</h1>
+  <p class="big">I take ideas from a hunch to something that holds up.</p>
+
+  <section class="sec"><div class="grid">{focus.map(([t, d]) => <div class="tile"><h3>{t}</h3><p>{d}</p></div>)}</div></section>
+
+  {courses.length > 0 && <section class="sec"><span class="mono dim">Learn</span><h2>The <em>atlas</em>. Pick a square.</h2>
+    {courses.map(c => <div style="margin-bottom:2rem"><p class="mono dim" style="margin:0 0 .8rem">{c.title} · {c.topics.length} topics</p>
+      <div class="mosaic">{c.topics.map((t: any) => <a class="px" style={`--c:${t.phase.color}`} href={u(`/learn/${c.id}/${t.id}/`)} title={t.title} aria-label={t.title}>{t.n}</a>)}</div>
+      <div class="legend mono dim">{c.phases.map((p: any) => <span style={`--c:${p.color}`}><i></i>{p.label}</span>)}</div></div>)}
+  </section>}
+
+  <section class="sec"><span class="mono dim">Writing</span><h2>Longer <em>field notes</em>.</h2>
+    <div class="grid">{posts.map(p => <a class="tile" href={u(`/writing/${p.id}/`)}><h3>{p.data.title}</h3><p>{p.data.excerpt}</p><div class="tags mono dim">{p.data.tags.map((t: string) => <span>{t}</span>)}</div></a>)}</div>
+    <p class="mono" style="margin-top:1.6rem"><a href={u("/writing/")} style="color:var(--hot)">All writing →</a></p>
+  </section>
+
+  <section class="sec"><span class="mono dim">Notes</span><h2>Pinned <em>thoughts</em>.</h2>
+    <div class="grid">{notes.map(n => <a class="tile note" href={u(`/notes/${n.id}/`)}><h3>{n.data.title}</h3><p>{n.data.summary}</p></a>)}</div>
+  </section>
+
+  {research.length > 0 && <section class="sec"><span class="mono dim">Research</span><h2>My research <em>notebook</em>.</h2>
+    <div class="shelf">{[...research.filter(b => b.src.data.status === 'reading'), ...research.filter(b => b.src.data.status !== 'reading')].slice(0, 3).map(b => <SourceCard b={b} />)}</div>
+    <p class="mono" style="margin-top:1.6rem"><a href={u('/research/')} style="color:var(--hot)">Papers, books, notes and pen pages →</a></p>
+  </section>}
+
+  {moments.length > 0 && <section class="sec"><span class="mono dim">Moments</span><h2>Wildlife, <em>through the lens</em>.</h2>
+    <Moments items={moments.slice(0, 6)} />
+    <p class="mono" style="margin-top:1.6rem"><a href={u('/moments/')} style="color:var(--hot)">All moments →</a></p>
+  </section>}
+
+  <section class="sec links" id="contact"><span class="mono dim">Contact</span><h2>Say <em>hello</em>.</h2>
+    {links.map(l => <a href={l.url} target="_blank" rel="noopener">{l.name} <span>↗</span></a>)}
+  </section>
+</Base>
+
+<script is:inline>
+(() => {
+  const c = document.getElementById('scene'), W = 200, H = 80, HZ = 44, x = c.getContext('2d');
+  c.width = W; c.height = H;
+  const d = new Date(), h = d.getHours() + d.getMinutes() / 60;
+  const P = h < 5 || h >= 21 ? 'night' : h < 9 ? 'dawn' : h < 17 ? 'day' : 'dusk';
+  const T = { dawn: ['#b9a6d6', '#f6b5c4', '#fde3c8'], day: ['#7fbde6', '#bfe3f5', '#f4f9fb'], dusk: ['#4b3a7a', '#d86f8f', '#ffb87a'], night: ['#0b0820', '#1d1642', '#3f2d68'] }[P];
+  const star = P === 'night', sunC = star ? '#fff3c4' : P === 'day' ? '#fff6c8' : '#ffe08a';
+  const B = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
+  const prog = star ? (h >= 21 ? (h - 21) / 10 : (h + 3) / 10) : Math.min(1, Math.max(0, (h - 5) / 16));
+  const sx = W * (.12 + .76 * prog), sy = HZ - 4 - Math.sin(Math.PI * prog) * 30;
+  const rnd = n => (Math.sin(n * 91.7) * 43758.5453) % 1;
+  const S = ['..PP.....', 'KPPP.....', '..PP.....', '..P......', '..PP.....', '...PP....', '...PP....', '..PPPPP..', '.PPPPPPPD', '..PPPPPD.', '...PPP...', '....L....', '....L....', '....L....'];
+  const col = { P: '#f27f9f', D: '#c2456f', K: '#2b2234', L: '#e8708f' };
+  const bird = (bx, by, flip, a) => { x.globalAlpha = a; S.forEach((r, j) => [...r].forEach((k, i) => { if (k !== '.') { x.fillStyle = col[k]; x.fillRect(Math.round(bx) + (flip ? 8 - i : i), Math.round(by) + j * (a < 1 ? -1 : 1), 1, 1); } })); x.globalAlpha = 1; };
+  const rip = []; let last = 0;
+  const spawn = e => { const r = c.getBoundingClientRect(), px = (e.clientX - r.left) / r.width * W, py = (e.clientY - r.top) / r.height * H; if (py > HZ && performance.now() - last > 140) { last = performance.now(); rip.push({ x: px, y: py, r: 1 }); } };
+  c.addEventListener('pointermove', spawn); c.addEventListener('pointerdown', spawn);
+  const draw = t => {
+    for (let y = 0; y < HZ; y++) for (let i = 0; i < W; i++) { const s = y / HZ * 2, k = Math.min(1, Math.floor(s)), f = s - k; x.fillStyle = T[Math.min(2, k + (f > B[y & 3][i & 3] / 16 ? 1 : 0))]; x.fillRect(i, y, 1, 1); }
+    if (star) for (let n = 0; n < 45; n++) { const on = Math.sin(t / 500 + n) > -.5; if (on) { x.fillStyle = '#fff'; x.fillRect(Math.abs(rnd(n)) * W | 0, Math.abs(rnd(n + 99)) * (HZ - 6) | 0, 1, 1); } }
+    x.fillStyle = sunC; for (let j = -6; j <= 6; j++) for (let i = -6; i <= 6; i++) if (i * i + j * j <= 30) x.fillRect(sx + i | 0, sy + j | 0, 1, 1);
+    for (let y = HZ; y < H; y++) for (let i = 0; i < W; i++) { const f = (y - HZ) / (H - HZ); x.fillStyle = T[f + (B[y & 3][i & 3] / 16 - .5) * .5 > .5 ? 0 : 1]; x.fillRect(i, y, 1, 1); }
+    x.fillStyle = sunC; for (let y = HZ + 1; y < H; y += 2) { const L = 3 + (y - HZ) * .5 + Math.sin(t / 380 + y) * 3; x.globalAlpha = .75 - (y - HZ) / 60; x.fillRect(sx - L / 2 | 0, y, L | 0, 1); } x.globalAlpha = 1;
+    x.fillStyle = star ? '#07051a' : '#3a2f52'; for (let i = 0; i < W; i++) { const hh = 2 + Math.floor(2 * Math.sin(i * .3) + 1.5 * Math.sin(i * .11 + 1) + 1.5); x.fillRect(i, HZ - hh, 1, hh); }
+    [[38, 58, 0, 0], [64, 63, 1, 1], [152, 56, 0, 0]].forEach(([bx, by, fl, wd], n) => { const ox = wd ? Math.sin(t / 3000) * 14 : 0; bird(bx + ox, by, fl ^ (wd && Math.cos(t / 3000) < 0 ? 1 : 0), 1); bird(bx + ox, by + 14, fl, .3); });
+    x.fillStyle = '#fff'; rip.forEach(q => { for (let a = 0; a < 6.3; a += .35) x.fillRect(q.x + Math.cos(a) * q.r | 0, q.y + Math.sin(a) * q.r * .35 | 0, 1, 1); q.r += .6; });
+    for (let i = rip.length - 1; i >= 0; i--) if (rip[i].r > 16) rip.splice(i, 1);
+  };
+  draw(0);
+  if (!matchMedia('(prefers-reduced-motion:reduce)').matches) setInterval(() => draw(performance.now()), 83);
+})();
+</script>

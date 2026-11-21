@@ -1,0 +1,21 @@
+---
+import { u } from '@/lib/url';
+import { getCollection, render } from 'astro:content';
+import { published } from '@/lib/content';
+import Base from '@/layouts/Base.astro';
+export async function getStaticPaths() {
+  return (await published('notes')).map(note => ({ params: { id: note.id }, props: { note } }));
+}
+const { note } = Astro.props;
+const { Content } = await render(note);
+---
+<Base title={note.data.title} description={note.data.summary}>
+  <section class="cell" style="border-bottom:0">
+    <span class="mono dim">{note.data.date.toISOString().slice(0, 10)}</span>
+    <div>
+      <h1 class="big" style="margin-bottom:2rem">{note.data.title}</h1>
+      <div class="prose"><Content /></div>
+      <p class="mono" style="margin-top:3rem"><a href={u("/notes/")}>← Notes</a></p>
+    </div>
+  </section>
+</Base>
