@@ -1,8 +1,9 @@
 ---
-title: "My first note"
+title: "Charles Horton Cooley"
 date: 2026-11-16
-summary: "Chhoti baatein, ek line mein."
 tags: []
+summary: "Quote"
 draft: false
 ---
-Notes chhote hote hain: ek idea, ek link, ek seekh. Studio mein type "Note" chuno.
+“I am not what I think I am, and I am not what you think I am. I am what I think you think I am.”
+~ Charles Horton Cooley
